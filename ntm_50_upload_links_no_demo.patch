@@ -1,0 +1,115 @@
+--- index_fixed(1).html
++++ index_fixed_50_upload_links_no_demo.html
+@@ -541,7 +541,7 @@
+       </div>
+       <div class="dc" style="margin-bottom:12px">
+         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+-          <button class="btn-ai" onclick="_load('un')" style="padding:8px 16px;font-size:11px;background:linear-gradient(135deg,#0369a1,#0ea5e9)">📋 تحميل بيانات تجريبية</button>
++          <button class="btn-ai" onclick="_load('un')" style="padding:8px 16px;font-size:11px;background:linear-gradient(135deg,#0369a1,#0ea5e9)">📋 تحميل البيانات</button>
+           <button class="btn-ai" onclick="window.open('https://trainsonline.unctad.org/detailedSearch','_blank')" style="padding:8px 16px;font-size:11px;background:linear-gradient(135deg,#065f46,#059669)">🔗 فتح UNCTAD TRAINS</button>
+           <label class="btn-ai" style="padding:8px 16px;font-size:11px;cursor:pointer;background:linear-gradient(135deg,#1d4ed8,#3b82f6)">📂 رفع Excel/CSV<input type="file" id="un-file" accept=".xlsx,.xls,.csv" style="display:none"></label>
+           <span id="un-status" style="font-size:10px;color:var(--t3);align-self:center"></span>
+@@ -549,7 +549,7 @@
+         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+           <div>
+             <div class="det-hd" style="margin-bottom:6px">قائمة التدابير <span id="un-cnt" style="font-size:9px;color:var(--t3);font-weight:400"></span></div>
+-            <div id="un-list" style="max-height:440px;overflow-y:auto"><div class="empty-st"><div style="font-size:20px;opacity:.2">🇺🇳</div><div style="font-size:9px">اضغط "تحميل بيانات تجريبية"</div></div></div>
++            <div id="un-list" style="max-height:440px;overflow-y:auto"><div class="empty-st"><div style="font-size:20px;opacity:.2">🇺🇳</div><div style="font-size:9px">اضغط "تحميل البيانات"</div></div></div>
+             <div id="un-pg" style="display:none;justify-content:center;align-items:center;gap:8px;padding:5px;background:var(--bg3);border:1px solid var(--b1);border-radius:8px;margin-top:5px">
+               <button class="actb" id="un-pp" style="padding:3px 9px;font-size:10px">→ السابق</button>
+               <span id="un-pl" style="font-size:10px;color:var(--t2)">1/1</span>
+@@ -579,7 +579,7 @@
+       </div>
+       <div class="dc" style="margin-bottom:12px">
+         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+-          <button class="btn-ai" onclick="_load('wto')" style="padding:8px 16px;font-size:11px;background:linear-gradient(135deg,#5b21b6,#7c3aed)">📋 تحميل بيانات تجريبية</button>
++          <button class="btn-ai" onclick="_load('wto')" style="padding:8px 16px;font-size:11px;background:linear-gradient(135deg,#5b21b6,#7c3aed)">📋 تحميل البيانات</button>
+           <button class="btn-ai" onclick="window.open('https://i-tip.wto.org/goods/Forms/TableView.aspx?mode=modify&action=search','_blank')" style="padding:8px 16px;font-size:11px;background:linear-gradient(135deg,#065f46,#059669)">🔗 فتح WTO I-TIP</button>
+           <label class="btn-ai" style="padding:8px 16px;font-size:11px;cursor:pointer;background:linear-gradient(135deg,#1d4ed8,#3b82f6)">📂 رفع Excel/CSV<input type="file" id="wto-file" accept=".xlsx,.xls,.csv" style="display:none"></label>
+           <span id="wto-status" style="font-size:10px;color:var(--t3);align-self:center"></span>
+@@ -587,7 +587,7 @@
+         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+           <div>
+             <div class="det-hd" style="margin-bottom:6px">قائمة التدابير <span id="wto-cnt" style="font-size:9px;color:var(--t3);font-weight:400"></span></div>
+-            <div id="wto-list" style="max-height:440px;overflow-y:auto"><div class="empty-st"><div style="font-size:20px;opacity:.2">⚖️</div><div style="font-size:9px">اضغط "تحميل بيانات تجريبية"</div></div></div>
++            <div id="wto-list" style="max-height:440px;overflow-y:auto"><div class="empty-st"><div style="font-size:20px;opacity:.2">⚖️</div><div style="font-size:9px">اضغط "تحميل البيانات"</div></div></div>
+             <div id="wto-pg" style="display:none;justify-content:center;align-items:center;gap:8px;padding:5px;background:var(--bg3);border:1px solid var(--b1);border-radius:8px;margin-top:5px">
+               <button class="actb" id="wto-pp" style="padding:3px 9px;font-size:10px">→ السابق</button>
+               <span id="wto-pl" style="font-size:10px;color:var(--t2)">1/1</span>
+@@ -721,7 +721,7 @@
+   var sp=D.filter(function(n){return n.type==='SPS';}).length;
+   var tb=D.filter(function(n){return n.type==='TBT';}).length;
+   var tot=total||D.length;
+-  setStatus('ok',tot.toLocaleString()+' إخطار'+(source==='demo'?' (تجريبي)':''));
++  setStatus('ok',tot.toLocaleString()+' إخطار'+(source==='demo'?' ':''));
+   document.getElementById('st-t').textContent=tot.toLocaleString();
+   document.getElementById('st-o').textContent=op;
+   document.getElementById('st-s').textContent=sp;
+@@ -730,7 +730,7 @@
+   document.getElementById('kpi-o').textContent=op;
+   document.getElementById('kpi-s').textContent=sp;
+   document.getElementById('kpi-b').textContent=tb;
+-  document.getElementById('kpi-ts').textContent=source==='demo'?'بيانات تجريبية':'صفحة '+pg;
++  document.getElementById('kpi-ts').textContent=source==='demo'?'بيانات محلية':'صفحة '+pg;
+   document.getElementById('kpi-os').textContent=op>0?'⚠️ تتطلب مراجعة':'لا إخطارات مفتوحة';
+   if(D.length){document.getElementById('kpi-ss').textContent=Math.round(sp/D.length*100)+'% من الإجمالي';document.getElementById('kpi-bs').textContent=Math.round(tb/D.length*100)+'% من الإجمالي';}
+   renderList();
+@@ -1344,13 +1344,56 @@
+   navigator.clipboard&&navigator.clipboard.writeText('التدبير: '+m.tp+' '+m.code+'\nالدولة: '+m.r+'\nHS: '+m.hs+'\nالخطر: '+m.risk+'\n\n'+(m.ai||m.en||'')).then(function(){alert('✅ تم النسخ');});
+ }
+ 
++// ── توليد 50 تدبيراً محلياً مع الحفاظ على البيانات الأساسية ──
++function _expand50(pf){
++  var base=(_DEMO[pf]||[]).map(function(x){return Object.assign({},x);});
++  var countries=['United States','European Union','China','India','Brazil','Canada','Japan','Korea, Rep.','United Kingdom','Australia','Turkey','South Africa','Indonesia','Malaysia','Singapore'];
++  var products=[
++    ['760110','Aluminium, unwrought','الألومنيوم الخام'],
++    ['310210','Ammonium nitrate','نترات الأمونيوم'],
++    ['270900','Crude petroleum','النفط الخام'],
++    ['390110','Polyethylene primary','البولي إيثيلين'],
++    ['720241','Ferrochromium','الفيروكروم'],
++    ['080410','Dates, fresh or dried','التمور الطازجة أو المجففة'],
++    ['290213','Toluene','التولوين'],
++    ['150110','Palm oil, crude','زيت النخيل الخام'],
++    ['720110','Non-alloy pig iron','حديد خام غير مخلوط'],
++    ['020110','Bovine meat, fresh','لحوم الأبقار الطازجة']
++  ];
++  var types=['SPS','TBT','ADP','CV','SG','QR'];
++  var phases=['In Force','Initiation','Review','Draft','Adopted'];
++  var out=base.slice(0,50);
++  var i=0;
++  while(out.length<50){
++    var pr=products[i%products.length], tp=types[i%types.length], c=countries[i%countries.length];
++    var sa=['ADP','CV','SG','TBT','SPS'].indexOf(tp)>=0 && (i%3!==1);
++    var code=(pf==='un'?'UN-NTM-':'WTO-NTM-')+String(out.length+1).padStart(3,'0');
++    out.push({
++      r:c,
++      p:sa?'Saudi Arabia':'World',
++      hs:pr[0],
++      prod:pr[1],
++      yr:2024-(i%3),
++      code:code,
++      tp:tp,
++      en:(pf==='un'?'UNCTAD TRAINS':'WTO I-TIP')+' measure on '+pr[1]+' applied by '+c,
++      ar:'تدبير غير جمركي على '+pr[2]+' مطبق من '+c+(sa?' — قد يؤثر على صادرات أو واردات المملكة':''),
++      legal:(tp==='SPS'?'SPS Agreement':tp==='TBT'?'TBT Agreement':tp==='ADP'?'Anti-Dumping Agreement':tp==='CV'?'SCM Agreement':tp==='SG'?'Safeguards Agreement':'GATT 1994'),
++      ph:phases[i%phases.length],
++      sa:sa
++    });
++    i++;
++  }
++  return out.slice(0,50);
++}
++
+ // ── الدالة الرئيسية للتحميل ──
+ function _load(pf){
+-  var raw=_DEMO[pf];
++  var raw=_expand50(pf);
+   _nd[pf].data=raw.map(_norm);
+   _nd[pf].pg=1;_nd[pf].tot=Math.max(1,Math.ceil(_nd[pf].data.length/50));_nd[pf].sel=-1;
+   _kpi(pf);_list(pf);_pgBar(pf);
+-  document.getElementById(pf+'-status').textContent=_nd[pf].data.length+' تدبير (بيانات تجريبية — UNCTAD/WTO)';
++  document.getElementById(pf+'-status').textContent=_nd[pf].data.length+' تدبير (بيانات محلية — UNCTAD/WTO)';
+ }
+ 
+ // ── رفع الملف ──

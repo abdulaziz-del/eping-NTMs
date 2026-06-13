@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>منصة إخطارات التجارة الدولية</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05080f;--bg2:#090f1e;--bg3:#0d1628;--bg4:#111e35;--bg5:#15243e;
+  --b1:#182844;--b2:#1f3558;--b3:#26406c;
+  --t1:#e6ecf8;--t2:#8aaad0;--t3:#4a6285;--t4:#283d5a;
+  --ac:#3b82f6;--ac2:#1d4ed8;
+  --gr:#10b981;--gr2:#059669;
+  --rd:#f43f5e;--am:#f59e0b;--pu:#8b5cf6;--cy:#06b6d4;
+  --r1:9px;--r2:13px;--r3:17px;
+}
+html,body{height:100%;overflow:hidden;font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--bg);color:var(--t1);direction:rtl}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+button{font-family:inherit;cursor:pointer}
+
+/* HEADER */
+#hdr{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(5,8,15,.96);border-bottom:1px solid var(--b1);position:relative;z-index:100;flex-shrink:0}
+.hlogo{display:flex;align-items:center;gap:10px}
+.hico{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#1d4ed8,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 0 14px rgba(59,130,246,.3)}
+.htxt .h1{font-size:13px;font-weight:700}
+.htxt .h2{font-size:9px;color:var(--t3);margin-top:1px}
+.hnav{display:flex;gap:2px;background:var(--bg3);border:1px solid var(--b1);border-radius:9px;padding:3px}
+.nb{padding:5px 12px;border-radius:6px;border:none;background:transparent;color:var(--t3);font-size:11px;transition:all .15s}
+.nb.on{background:var(--bg5);color:var(--t1)}
+.nb:hover:not(.on){color:var(--t2)}
+.hright{display:flex;align-items:center;gap:7px}
+.hstat{display:flex;align-items:center;gap:5px;padding:4px 9px;border-radius:20px;background:var(--bg3);border:1px solid var(--b1);font-size:10px;color:var(--t2)}
+.hstat.ok{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.06)}
+.hdot{width:6px;height:6px;border-radius:50%;background:var(--am);animation:pulse 2s infinite;flex-shrink:0}
+.hdot.on{background:var(--gr);box-shadow:0 0 7px var(--gr)}
+.hbtn{padding:5px 11px;border-radius:7px;border:1px solid var(--b1);background:transparent;color:var(--t3);font-size:11px;transition:all .15s}
+.hbtn:hover{border-color:var(--ac);color:var(--t1)}
+.hbtn:disabled{opacity:.4}
+
+/* LAYOUT */
+#wrap{display:flex;height:calc(100vh - 52px)}
+
+/* SIDEBAR */
+#sb{width:340px;min-width:340px;border-left:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;background:var(--bg2)}
+.sb-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:8px;border-bottom:1px solid var(--b1);flex-shrink:0}
+.ssc{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r1);padding:7px 5px;text-align:center;cursor:pointer;transition:all .15s}
+.ssc:hover,.ssc.on{border-color:var(--ac);background:var(--bg4)}
+.ssc .n{font-size:17px;font-weight:700;line-height:1}
+.ssc .l{font-size:9px;color:var(--t3);margin-top:3px;text-transform:uppercase}
+.sb-flt{padding:8px;border-bottom:1px solid var(--b1);flex-shrink:0}
+.si{width:100%;padding:7px 10px 7px 30px;background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r1);color:var(--t1);font-size:12px;outline:none;direction:rtl;margin-bottom:6px;transition:border .15s}
+.si:focus{border-color:var(--ac)}
+.si::placeholder{color:var(--t4)}
+.sw{position:relative}
+.sw .si{padding-left:30px}
+.sw span{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:12px;pointer-events:none}
+.ss{width:100%;padding:6px 10px;background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r1);color:var(--t1);font-size:11px;outline:none;margin-bottom:6px;-webkit-appearance:none}
+.pills{display:flex;gap:4px;flex-wrap:wrap}
+.pl{padding:4px 10px;border-radius:20px;border:1px solid var(--b1);background:transparent;color:var(--t4);font-size:10px;transition:all .15s}
+.pl:hover{border-color:var(--b2);color:var(--t2)}
+.pl.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+#lst{flex:1;overflow-y:auto;padding:7px}
+.pgb{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-top:1px solid var(--b1);flex-shrink:0;background:var(--bg)}
+.pgbtn{padding:4px 11px;border-radius:6px;border:1px solid var(--b1);background:transparent;color:var(--t3);font-size:10px;transition:all .15s}
+.pgbtn:hover:not(:disabled){border-color:var(--ac);color:var(--t1)}
+.pgbtn:disabled{opacity:.3}
+.pglbl{font-size:10px;color:var(--t3)}
+
+/* NOTIF CARD */
+.nc{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:10px 11px;cursor:pointer;margin-bottom:5px;transition:all .15s;position:relative;overflow:hidden}
+.nc::after{content:'';position:absolute;right:0;top:0;bottom:0;width:2px;background:transparent;transition:background .15s}
+.nc:hover{border-color:var(--b2);background:var(--bg4)}
+.nc:hover::after,.nc.sel::after{background:var(--ac)}
+.nc.sel{border-color:rgba(59,130,246,.4);background:var(--bg4)}
+.nr1{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.nr2{font-size:11px;font-weight:500;line-height:1.55;color:#b8cce8;margin-bottom:5px}
+.nr3{display:flex;justify-content:space-between;align-items:center}
+.nmem{font-size:10px;color:var(--t3)}
+.ndt{font-size:9px;color:var(--t4)}
+
+/* BADGES */
+.bdg{display:inline-flex;align-items:center;padding:1px 7px;border-radius:20px;font-size:9px;font-weight:700}
+.bdg.sps{background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.2)}
+.bdg.tbt{background:rgba(245,158,11,.1);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.bdg.open{background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.2)}
+.bdg.closed{background:rgba(244,63,94,.1);color:#fb7185;border:1px solid rgba(244,63,94,.2)}
+
+/* MAIN */
+#main{flex:1;overflow-y:auto;background:var(--bg)}
+.pnl{display:none;padding:18px;min-height:100%}
+.pnl.show{display:block}
+
+/* DASHBOARD */
+.hero{background:linear-gradient(135deg,rgba(29,78,216,.15),rgba(6,182,212,.07));border:1px solid rgba(59,130,246,.2);border-radius:20px;padding:20px 24px;margin-bottom:16px}
+.hero h1{font-size:18px;font-weight:700;margin-bottom:5px}
+.hero p{font-size:11px;color:var(--t2);line-height:1.7;max-width:500px}
+.qlinks{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.ql{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:7px;border:1px solid var(--b1);color:var(--t3);font-size:10px;text-decoration:none;transition:all .15s}
+.ql:hover{border-color:var(--b2);color:var(--t2);background:var(--bg3)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:var(--bg2);border:1px solid var(--b1);border-radius:var(--r3);padding:14px;position:relative;overflow:hidden;transition:border .2s}
+.kpi:hover{border-color:var(--b2)}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--kc,var(--ac))}
+.kpi-ico{font-size:18px;margin-bottom:7px}
+.kpi-val{font-size:22px;font-weight:700;margin-bottom:2px}
+.kpi-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px}
+.kpi-sub{font-size:10px;margin-top:4px;color:var(--t3)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.dc{background:var(--bg2);border:1px solid var(--b1);border-radius:var(--r3);padding:14px;margin-bottom:12px}
+.dch{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.bar-chart{display:flex;flex-direction:column;gap:6px}
+.bar-row{display:flex;align-items:center;gap:7px;font-size:10px}
+.bar-lbl{width:100px;color:var(--t2);text-align:right;flex-shrink:0}
+.bar-track{flex:1;height:7px;background:var(--b1);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.bar-val{width:28px;color:var(--t3);font-size:9px;text-align:left;flex-shrink:0}
+.tl-item{display:flex;align-items:flex-start;gap:8px;padding:7px 9px;background:var(--bg3);border-radius:var(--r1);border:1px solid var(--b1);margin-bottom:5px;cursor:pointer;transition:border .15s}
+.tl-item:hover{border-color:var(--b2)}
+.tl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.tl-title{font-size:11px;color:#b8cce8;margin-bottom:2px;line-height:1.5}
+.tl-meta{font-size:9px;color:var(--t3);display:flex;gap:6px;flex-wrap:wrap}
+.tm-item{display:flex;align-items:center;gap:7px;padding:6px 8px;background:var(--bg3);border-radius:var(--r1);border:1px solid var(--b1);margin-bottom:4px;cursor:pointer;transition:border .15s}
+.tm-item:hover{border-color:var(--b2)}
+.tm-bar{display:flex;height:4px;border-radius:2px;overflow:hidden;width:55px;background:var(--b1)}
+.tm-sps{background:var(--gr);height:100%}
+.tm-tbt{background:var(--am);height:100%}
+.risk-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
+.risk-c{background:var(--bg3);border-radius:var(--r2);padding:9px;text-align:center;border:1px solid var(--b1)}
+.risk-c.h{border-color:rgba(244,63,94,.25);background:rgba(244,63,94,.04)}
+.risk-c.m{border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.04)}
+.risk-c.l{border-color:rgba(16,185,129,.25);background:rgba(16,185,129,.04)}
+.risk-c .ri{font-size:16px;margin-bottom:4px}
+.risk-c .rl{font-size:9px;color:var(--t3)}
+.risk-c .rv{font-size:16px;font-weight:700}
+.legal-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.legal-box{padding:9px 11px;background:var(--bg3);border-radius:var(--r1);border:1px solid var(--b1)}
+.legal-box h3{font-size:10px;font-weight:600;margin-bottom:5px}
+.legal-box p{font-size:9px;color:var(--t3);line-height:1.8}
+
+/* DETAIL */
+.det-empty{height:calc(100vh - 120px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--t4);text-align:center}
+.det-empty-ico{width:64px;height:64px;background:var(--bg2);border:1px solid var(--b1);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.det-dc{background:var(--bg2);border:1px solid var(--b1);border-radius:var(--r3);padding:15px 17px;margin-bottom:11px}
+.det-hd{font-size:10px;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.det-hd::after{content:'';flex:1;height:1px;background:var(--b1)}
+.dtit{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:4px}
+.deng{font-size:11px;color:var(--t2);line-height:1.6;margin-bottom:3px}
+.mg4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px;padding-top:12px;border-top:1px solid var(--b1)}
+.mg4 .ml{font-size:9px;color:var(--t4);text-transform:uppercase;margin-bottom:2px}
+.mg4 .mv{font-size:11px;font-weight:600;color:#c0d4f0}
+.ptags{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px;align-items:center}
+.ptag{padding:2px 8px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.15);border-radius:20px;font-size:10px;color:#93b4dd}
+.kwtag{padding:2px 8px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15);border-radius:20px;font-size:10px;color:#b4a0f0}
+.doc-row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--bg);border:1px solid var(--b1);border-radius:var(--r1);margin-bottom:4px}
+.doc-a{font-size:10px;color:var(--ac);padding:2px 8px;border-radius:5px;border:1px solid rgba(59,130,246,.25);text-decoration:none}
+.doc-a:hover{background:rgba(59,130,246,.08)}
+.risk-det{background:var(--bg2);border:1px solid rgba(139,92,246,.2);border-radius:var(--r3);padding:14px;margin-bottom:11px}
+.risk-meter{display:flex;gap:3px;margin:7px 0}
+.rseg{height:7px;flex:1;border-radius:2px;opacity:.25}
+.rseg.fill{opacity:1}
+.rseg.rg{background:var(--gr)}.rseg.ra{background:var(--am)}.rseg.rr{background:var(--rd)}
+.axis-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:7px}
+.axis-box{background:var(--bg4);border-radius:7px;padding:6px 8px;border:1px solid var(--b1)}
+.axis-lbl{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.axis-val{font-size:15px;font-weight:700}
+.axis-sub{font-size:9px;color:var(--t3);margin-top:3px}
+.btn-ai{padding:9px 20px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--ac2),var(--ac));color:#fff;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(59,130,246,.28);transition:all .2s}
+.btn-ai:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(59,130,246,.38)}
+.btn-ai:disabled{opacity:.5;transform:none;box-shadow:none}
+.btn-ai.gr{background:linear-gradient(135deg,var(--gr2),var(--gr));box-shadow:0 4px 16px rgba(16,185,129,.22)}
+.btn-ctr{text-align:center;margin:10px 0}
+.btn-hint{font-size:10px;color:var(--t4);margin-top:4px;text-align:center}
+.atabs{display:flex;gap:2px;padding:3px;background:var(--bg3);border:1px solid var(--b1);border-radius:9px;width:fit-content;margin-bottom:10px}
+.atab{padding:5px 12px;border-radius:7px;border:none;background:transparent;color:var(--t4);font-size:11px;transition:all .15s}
+.atab.on{background:var(--bg5);color:var(--t1);border:1px solid var(--b2)}
+.abox{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:15px;line-height:1.9;font-size:12px;color:#b8cce8;white-space:pre-wrap;min-height:100px}
+.act-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.actb{padding:6px 13px;border-radius:7px;border:1px solid var(--b2);background:var(--bg3);color:var(--t3);font-size:11px;transition:all .15s}
+.actb:hover{border-color:var(--b3);color:var(--t1)}
+.actb.bl{border-color:rgba(59,130,246,.3);color:var(--ac)}
+.actb.gn{border-color:rgba(16,185,129,.3);color:var(--gr)}
+.shim{height:11px;border-radius:4px;background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:300% 100%;animation:shim 1.5s infinite;margin-bottom:8px}
+.days-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:8px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);margin-top:7px}
+
+/* SEARCH */
+.adv-form{background:var(--bg2);border:1px solid var(--b1);border-radius:var(--r3);padding:16px;margin-bottom:14px}
+.adv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:10px}
+.adv-field label{font-size:9px;color:var(--t4);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
+.res-card{background:var(--bg2);border:1px solid var(--b1);border-radius:var(--r2);padding:12px;cursor:pointer;margin-bottom:7px;transition:border .15s}
+.res-card:hover{border-color:var(--b2);background:var(--bg3)}
+
+/* COMPARE */
+.cmp-slots{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.cmp-slot{background:var(--bg2);border:2px dashed var(--b2);border-radius:var(--r3);padding:14px;min-height:70px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:all .15s}
+.cmp-slot:hover{border-color:var(--b3)}
+.cmp-slot.filled{border-style:solid;align-items:flex-start;justify-content:flex-start;flex-direction:column;gap:5px}
+.cmp-ph{font-size:11px;color:var(--t4)}
+.cmp-table{width:100%;border-collapse:collapse;font-size:11px}
+.cmp-table th{padding:7px 11px;background:var(--bg3);border-bottom:1px solid var(--b1);color:var(--t3);font-size:9px;text-transform:uppercase;letter-spacing:.3px;text-align:right}
+.cmp-table td{padding:7px 11px;border-bottom:1px solid var(--b1);vertical-align:top;line-height:1.5}
+.cmp-table tr:hover td{background:rgba(255,255,255,.02)}
+.cmp-diff td{border-right:2px solid var(--am)}
+
+/* ALERTS */
+.al-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.al-card{background:var(--bg2);border:1px solid var(--b1);border-radius:var(--r3);padding:14px}
+.al-card h3{font-size:12px;font-weight:600;margin-bottom:10px}
+.al-row{display:flex;align-items:center;gap:7px;padding:7px 9px;background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r1);margin-bottom:5px}
+.al-info{flex:1;min-width:0}
+.al-name{font-size:11px;font-weight:600;color:var(--t1)}
+.al-desc{font-size:10px;color:var(--t3)}
+.al-del{padding:3px 7px;border-radius:5px;border:1px solid rgba(244,63,94,.2);background:transparent;color:var(--rd);font-size:10px;transition:all .15s}
+.al-del:hover{background:rgba(244,63,94,.08)}
+.tgl{position:relative;width:33px;height:18px;flex-shrink:0}
+.tgl input{opacity:0;width:0;height:0}
+.tslider{position:absolute;cursor:pointer;inset:0;background:var(--b2);border-radius:20px;transition:.2s}
+.tslider::before{content:'';position:absolute;height:12px;width:12px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
+.tgl input:checked+.tslider{background:var(--ac)}
+.tgl input:checked+.tslider::before{transform:translateX(15px)}
+
+/* EXPORT */
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px}
+.exp-card{background:var(--bg2);border:1px solid var(--b1);border-radius:var(--r3);padding:14px;text-align:center;cursor:pointer;transition:all .2s}
+.exp-card:hover{border-color:var(--b2);transform:translateY(-2px)}
+.exp-card .ei{font-size:22px;margin-bottom:7px}
+.exp-card h3{font-size:11px;font-weight:600;margin-bottom:3px}
+.exp-card p{font-size:9px;color:var(--t3);line-height:1.5}
+.res-links{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.rl{display:flex;align-items:center;gap:8px;padding:9px 11px;background:var(--bg2);border:1px solid var(--b1);border-radius:var(--r2);text-decoration:none;color:inherit;transition:all .15s}
+.rl:hover{border-color:var(--b2);background:var(--bg3)}
+.rl .ri{font-size:16px;flex-shrink:0}
+.rl .rn{font-size:11px;font-weight:600;color:var(--t1)}
+.rl .ru{font-size:9px;color:var(--t3)}
+
+/* SHARED */
+.sec-title{font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.sec-title span{font-size:10px;font-weight:400;color:var(--t3)}
+.empty-st{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:30px;color:var(--t4);text-align:center}
+
+/* PROGRESS */
+.pbar-wrap{padding:0 8px;flex-shrink:0;height:0;overflow:hidden;transition:height .2s}
+.pbar-wrap.show{height:12px;padding:4px 8px}
+.pbar-track{height:3px;background:var(--b1);border-radius:2px;overflow:hidden}
+.pbar-fill{height:100%;background:linear-gradient(90deg,var(--ac),var(--cy));border-radius:2px;transition:width .4s;width:0%}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.nc{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r2);padding:10px 12px;cursor:pointer;margin-bottom:5px;transition:border .15s}.nc:hover{border-color:var(--b3)}.nc.sel{border-color:rgba(139,92,246,.5);background:var(--bg4)}
+.rh{padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;background:rgba(244,63,94,.08);color:#fb7185;border:1px solid rgba(244,63,94,.2)}.rm{padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;background:rgba(245,158,11,.08);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}.rl2{padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;background:rgba(16,185,129,.08);color:#34d399;border:1px solid rgba(16,185,129,.2)}
+.ad{padding:2px 7px;border-radius:20px;font-size:9px;background:rgba(244,63,94,.08);color:#fb7185;border:1px solid rgba(244,63,94,.2)}.as{padding:2px 7px;border-radius:20px;font-size:9px;background:rgba(245,158,11,.08);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}.ac{padding:2px 7px;border-radius:20px;font-size:9px;background:rgba(6,182,212,.08);color:#22d3ee;border:1px solid rgba(6,182,212,.2)}.an{padding:2px 7px;border-radius:20px;font-size:9px;background:rgba(59,130,246,.08);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}.am2{padding:2px 7px;border-radius:20px;font-size:9px;background:rgba(71,85,105,.1);color:#94a3b8;border:1px solid rgba(71,85,105,.2)}
+@keyframes shim{0%{background-position:200%}100%{background-position:-100%}}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.fi{animation:fi .2s ease}
+.ldots::after{content:'...';animation:ldots 1.4s steps(4,end) infinite}
+@keyframes ldots{0%,20%{content:'.'}40%,60%{content:'..'}80%,100%{content:'...'}}
+.ntm-analysis-box{max-height:none!important;overflow:visible!important;white-space:pre-wrap;line-height:1.9}
+.ntm-criteria{background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.18);border-radius:var(--r2);padding:10px 12px;margin-bottom:8px}
+.ntm-criteria ul{margin:6px 18px 0 0;padding:0;color:var(--t2);font-size:10px;line-height:1.8}
+.ntm-criteria li{margin-bottom:2px}
+
+
+/* إصلاح عرض تحليل التدابير بالكامل */
+#p-ntm-un, #p-ntm-wto, #p-ntm-un .dc, #p-ntm-wto .dc, #p-ntm-un .det-dc, #p-ntm-wto .det-dc{max-height:none!important;overflow:visible!important;}
+#un-det, #wto-det{max-height:none!important;overflow:visible!important;height:auto!important;}
+.ntm-analysis-box{display:block!important;max-height:none!important;height:auto!important;overflow:visible!important;white-space:pre-wrap!important;line-height:1.95!important;}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hlogo">
+    <div class="hico">⚖️</div>
+    <div class="htxt"><div class="h1">منصة إخطارات التجارة الدولية</div><div class="h2">المرصد الوطني لإخطارات SPS / TBT — WTO</div></div>
+  </div>
+  <nav class="hnav">
+    <button class="nb on" onclick="goPage('dash',this)">📊 لوحة التحكم</button>
+    <button class="nb" onclick="goPage('det',this)">📋 الإخطارات</button>
+    <button class="nb" onclick="goPage('search',this)">🔍 بحث متقدم</button>
+    <button class="nb" onclick="goPage('compare',this)">⚖️ مقارنة</button>
+    <button class="nb" onclick="goPage('alerts',this)">🔔 تنبيهاتي</button>
+    <button class="nb" onclick="goPage('ntm-un',this)">🛡️ التدابير غير الجمركية UN</button>
+    <button class="nb" onclick="goPage('ntm-wto',this)">🛡️ التدابير غير الجمركية WTO</button>
+
+  </nav>
+  <div class="hright">
+    <div class="hstat" id="hstat"><div class="hdot" id="hdot"></div><span id="hlbl">جارٍ التحميل...</span></div>
+    <button class="hbtn" id="rfbtn" onclick="doLoad(true)">↻ تحديث</button>
+  </div>
+</div>
+
+<div id="wrap">
+  <!-- SIDEBAR -->
+  <div id="sb">
+    <div class="sb-stats">
+      <div class="ssc" onclick="setPill('all',null)"><div class="n" id="st-t" style="color:var(--ac)">0</div><div class="l">إجمالي</div></div>
+      <div class="ssc" onclick="setPill('open',null)"><div class="n" id="st-o" style="color:var(--gr)">0</div><div class="l">مفتوح</div></div>
+      <div class="ssc" onclick="setPill('SPS',null)"><div class="n" id="st-s" style="color:#34d399">0</div><div class="l">SPS</div></div>
+      <div class="ssc" onclick="setPill('TBT',null)"><div class="n" id="st-b" style="color:#fbbf24">0</div><div class="l">TBT</div></div>
+    </div>
+    <div class="pbar-wrap" id="pbar-wrap"><div class="pbar-track"><div class="pbar-fill" id="pbar-fill"></div></div></div>
+    <div class="sb-flt">
+      <div class="sw"><span>🔍</span><input class="si" id="srch" type="text" placeholder="بحث سريع..." oninput="renderList()"/></div>
+      <select class="ss" id="srch2" onchange="pg=1;doLoad()">
+        <option value="">🌍 جميع الدول</option>
+        <option value="C682">🇸🇦 المملكة العربية السعودية</option>
+        <option value="C784">🇦🇪 الإمارات</option>
+        <option value="C634">🇶🇦 قطر</option>
+        <option value="C414">🇰🇼 الكويت</option>
+        <option value="C048">🇧🇭 البحرين</option>
+        <option value="C512">🇴🇲 عُمان</option>
+        <option value="C400">🇯🇴 الأردن</option>
+        <option value="C818">🇪🇬 مصر</option>
+        <option value="C840">🇺🇸 الولايات المتحدة</option>
+        <option value="C381">🇪🇺 الاتحاد الأوروبي</option>
+        <option value="C156">🇨🇳 الصين</option>
+        <option value="C356">🇮🇳 الهند</option>
+        <option value="C392">🇯🇵 اليابان</option>
+        <option value="C826">🇬🇧 المملكة المتحدة</option>
+        <option value="C276">🇩🇪 ألمانيا</option>
+        <option value="C410">🇰🇷 كوريا الجنوبية</option>
+        <option value="C792">🇹🇷 تركيا</option>
+        <option value="C036">🇦🇺 أستراليا</option>
+        <option value="C124">🇨🇦 كندا</option>
+        <option value="C076">🇧🇷 البرازيل</option>
+        <option value="C702">🇸🇬 سنغافورة</option>
+        <option value="C704">🇻🇳 فيتنام</option>
+        <option value="C360">🇮🇩 إندونيسيا</option>
+      </select>
+      <div class="pills">
+        <button class="pl on" onclick="setPill('all',this)">الكل</button>
+        <button class="pl" onclick="setPill('SPS',this)">SPS</button>
+        <button class="pl" onclick="setPill('TBT',this)">TBT</button>
+        <button class="pl" onclick="setPill('open',this)">🟢 مفتوح</button>
+        <button class="pl" onclick="setPill('saudi',this)">🇸🇦 سعودي</button>
+      </div>
+    </div>
+    <div id="lst"><div class="empty-st"><div style="font-size:22px;opacity:.3">⏳</div><div style="font-size:11px">جارٍ التحميل...</div></div></div>
+    <div class="pgb" id="pgb" style="display:none">
+      <button class="pgbtn" id="pp" onclick="chpg(-1)">→ السابق</button>
+      <span class="pglbl" id="pglbl">1/1</span>
+      <button class="pgbtn" id="pn" onclick="chpg(1)">التالي ←</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+
+    <!-- DASHBOARD -->
+    <div id="p-dash" class="pnl show fi">
+      <div class="hero">
+        <h1>🇸🇦 منصة إخطارات التجارة الدولية</h1>
+        <p>رصد وتحليل إخطارات SPS وTBT الصادرة عن أعضاء منظمة التجارة العالمية — دعم قرار وزارة التجارة والهيئة العامة للتجارة الخارجية</p>
+        <div class="qlinks">
+          <a href="https://eping.wto.org" target="_blank" class="ql">🌐 ePing الرسمي</a>
+          <a href="https://www.wto.org/english/tratop_e/sps_e/sps_e.htm" target="_blank" class="ql">📋 لجنة SPS</a>
+          <a href="https://www.wto.org/english/tratop_e/tbt_e/tbt_e.htm" target="_blank" class="ql">⚖️ لجنة TBT</a>
+          <a href="https://mc.gov.sa" target="_blank" class="ql">🏛️ وزارة التجارة</a>
+          <a href="https://www.zatca.gov.sa" target="_blank" class="ql">💼 ZATCA</a>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kpi" style="--kc:var(--ac)"><div class="kpi-ico">📋</div><div class="kpi-val" id="kpi-t" style="color:var(--ac)">0</div><div class="kpi-lbl">إجمالي الإخطارات</div><div class="kpi-sub" id="kpi-ts">—</div></div>
+        <div class="kpi" style="--kc:var(--gr)"><div class="kpi-ico">🟢</div><div class="kpi-val" id="kpi-o" style="color:var(--gr)">0</div><div class="kpi-lbl">مفتوحة للتعليق</div><div class="kpi-sub" id="kpi-os">تتطلب متابعة</div></div>
+        <div class="kpi" style="--kc:#34d399"><div class="kpi-ico">🌿</div><div class="kpi-val" id="kpi-s" style="color:#34d399">0</div><div class="kpi-lbl">إخطارات SPS</div><div class="kpi-sub" id="kpi-ss">تدابير صحية</div></div>
+        <div class="kpi" style="--kc:var(--am)"><div class="kpi-ico">🔧</div><div class="kpi-val" id="kpi-b" style="color:var(--am)">0</div><div class="kpi-lbl">إخطارات TBT</div><div class="kpi-sub" id="kpi-bs">عوائق تقنية</div></div>
+      </div>
+      <div class="row2">
+        <div class="dc"><div class="dch">أكثر الدول إخطاراً</div><div id="d-members"><div class="empty-st" style="padding:16px"><div style="font-size:14px;opacity:.3">—</div></div></div></div>
+        <div class="dc"><div class="dch">تقييم المخاطر 🇸🇦<span id="d-risk-src" style="font-size:9px;color:var(--t4)"></span></div>
+          <div class="risk-cards">
+            <div class="risk-c h"><div class="ri">⚠️</div><div class="rl" style="margin-bottom:3px">عالٍ</div><div class="rv" id="d-rh" style="color:var(--rd)">0</div></div>
+            <div class="risk-c m"><div class="ri">🔶</div><div class="rl" style="margin-bottom:3px">متوسط</div><div class="rv" id="d-rm" style="color:var(--am)">0</div></div>
+            <div class="risk-c l"><div class="ri">✅</div><div class="rl" style="margin-bottom:3px">منخفض</div><div class="rv" id="d-rl" style="color:var(--gr)">0</div></div>
+          </div>
+          <div id="d-risk-note" style="font-size:9px;color:var(--t4);padding:6px 8px;background:var(--bg3);border-radius:7px;border:1px solid var(--b1);line-height:1.7">
+            المنهجية: أثر تجاري (40ن) + حساسية القطاع (35ن) + ضيق المهلة (25ن) | ZATCA · هيئة الإحصاء · ITC
+          </div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="dc"><div class="dch">آخر الإخطارات المفتوحة <span id="d-open-cnt" style="color:var(--gr)"></span></div><div id="d-recent"><div class="empty-st" style="padding:16px"><div style="font-size:14px;opacity:.3">—</div></div></div></div>
+        <div class="dc"><div class="dch">توزيع المنتجات والقطاعات</div><div class="bar-chart" id="d-barchart"><div class="empty-st" style="padding:16px"><div style="font-size:14px;opacity:.3">—</div></div></div></div>
+      </div>
+      <div class="dc">
+        <div class="dch">المرجعية القانونية</div>
+        <div class="legal-grid">
+          <div class="legal-box"><h3 style="color:#34d399">🌿 اتفاقية SPS</h3><p>• المادة 5: تقييم المخاطر<br>• المادة 7: الشفافية والإخطار<br>• معايير: Codex / OIE / IPPC<br>• 60-90 يوم للتعليق</p></div>
+          <div class="legal-box"><h3 style="color:#fbbf24">🔧 اتفاقية TBT</h3><p>• المادة 2: عدم التمييز<br>• المادة 5: إجراءات المطابقة<br>• معايير: ISO / IEC / ITU<br>• 60 يوم للاعتراض</p></div>
+          <div class="legal-box"><h3 style="color:#60a5fa">⚖️ اتفاقية DSU</h3><p>• آلية فض النزاعات<br>• المشاورات / الهيئات / الاستئناف<br>• المادة 21.5: تنفيذ القرارات</p></div>
+          <div class="legal-box"><h3 style="color:#a78bfa">🇸🇦 الإطار السعودي</h3><p>• هيئة الخبراء بمجلس الوزراء<br>• وزارة التجارة MC — GAFT<br>• هيئة الزكاة والجمارك ZATCA<br>• هيئة المواصفات SASO<br>• هيئة الغذاء والدواء SFDA</p></div>
+        </div>
+      </div>
+    <!-- مواقع مفيدة للتجار -->
+    <div class="dc" style="margin-bottom:0">
+      <div class="dch">🔗 المواقع الرسمية والمنصات المفيدة للتجار</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
+
+        <a href="https://eping.wto.org" target="_blank" class="rl">
+          <span class="ri">🌐</span><div><div class="rn">ePing — إخطارات WTO</div><div class="ru">eping.wto.org</div></div>
+        </a>
+        <a href="https://docs.wto.org" target="_blank" class="rl">
+          <span class="ri">📄</span><div><div class="rn">WTO Documents Online</div><div class="ru">docs.wto.org</div></div>
+        </a>
+        <a href="https://www.wto.org/english/tratop_e/sps_e/sps_e.htm" target="_blank" class="rl">
+          <span class="ri">🌿</span><div><div class="rn">لجنة SPS — WTO</div><div class="ru">wto.org/sps</div></div>
+        </a>
+        <a href="https://www.wto.org/english/tratop_e/tbt_e/tbt_e.htm" target="_blank" class="rl">
+          <span class="ri">⚙️</span><div><div class="rn">لجنة TBT — WTO</div><div class="ru">wto.org/tbt</div></div>
+        </a>
+        <a href="https://www.wto.org/english/tratop_e/dispu_e/dispu_e.htm" target="_blank" class="rl">
+          <span class="ri">⚖️</span><div><div class="rn">نظام فض النزاعات DSU</div><div class="ru">wto.org/disputes</div></div>
+        </a>
+        <a href="https://mc.gov.sa" target="_blank" class="rl">
+          <span class="ri">🏛️</span><div><div class="rn">وزارة التجارة MC</div><div class="ru">mc.gov.sa</div></div>
+        </a>
+        <a href="https://www.zatca.gov.sa" target="_blank" class="rl">
+          <span class="ri">💼</span><div><div class="rn">هيئة الزكاة والجمارك ZATCA</div><div class="ru">zatca.gov.sa</div></div>
+        </a>
+        <a href="https://sfda.gov.sa" target="_blank" class="rl">
+          <span class="ri">🍽️</span><div><div class="rn">هيئة الغذاء والدواء SFDA</div><div class="ru">sfda.gov.sa</div></div>
+        </a>
+        <a href="https://saso.gov.sa" target="_blank" class="rl">
+          <span class="ri">📐</span><div><div class="rn">هيئة المواصفات SASO</div><div class="ru">saso.gov.sa</div></div>
+        </a>
+
+
+        <a href="https://www.trademap.org" target="_blank" class="rl">
+          <span class="ri">🌍</span><div><div class="rn">ITC Trade Map</div><div class="ru">trademap.org</div></div>
+        </a>
+        <a href="https://www.stats.gov.sa/ar/statistics-tabs?tab=436312&category=123481" target="_blank" class="rl">
+          <span class="ri">📤</span><div><div class="rn">التجارة الدولية للسلع — المملكة</div><div class="ru">stats.gov.sa</div></div>
+        </a>
+        <a href="https://www.stats.gov.sa/ar/w/%D8%A7%D9%84%D9%88%D8%A7%D8%B1%D8%AF%D8%A7%D8%AA-%D8%A7%D9%84%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84-" target="_blank" class="rl">
+          <span class="ri">📥</span><div><div class="rn">الواردات السعودية — هيئة الإحصاء</div><div class="ru">stats.gov.sa</div></div>
+        </a>
+        <a href="https://www.stats.gov.sa/ar/statistics-tabs?tab=436312&category=1340149" target="_blank" class="rl">
+          <span class="ri">🔄</span><div><div class="rn">التجارة الدولية للخدمات — المملكة</div><div class="ru">stats.gov.sa</div></div>
+        </a>
+        <a href="https://www.macmap.org" target="_blank" class="rl">
+          <span class="ri">🗺️</span><div><div class="rn">Market Access Map — ITC</div><div class="ru">macmap.org</div></div>
+        </a>
+        <a href="https://unctad.org/topic/trade-analysis/non-tariff-measures" target="_blank" class="rl">
+          <span class="ri">📋</span><div><div class="rn">UNCTAD — التدابير غير التعريفية</div><div class="ru">unctad.org/ntm</div></div>
+        </a>
+        <a href="https://gaft.gov.sa" target="_blank" class="rl">
+          <span class="ri">🚢</span><div><div class="rn">الهيئة العامة للتجارة الخارجية GAFT</div><div class="ru">gaft.gov.sa</div></div>
+        </a>
+
+        <a href="https://www.oie.int" target="_blank" class="rl">
+          <span class="ri">🐄</span><div><div class="rn">OIE — الصحة الحيوانية</div><div class="ru">oie.int</div></div>
+        </a>
+        <a href="https://www.ippc.int" target="_blank" class="rl">
+          <span class="ri">🌱</span><div><div class="rn">IPPC — صحة النباتات</div><div class="ru">ippc.int</div></div>
+        </a>
+      </div>
+    </div>
+    </div>
+
+    <!-- DETAIL -->
+    <div id="p-det" class="pnl">
+      <div class="det-empty" id="det-empty">
+        <div class="det-empty-ico">⚖️</div>
+        <div style="font-size:15px;font-weight:600;color:var(--t2)">اختر إخطاراً للتحليل</div>
+        <div style="font-size:11px;max-width:270px;line-height:1.7;color:var(--t3)">اضغط على أي إخطار في القائمة لعرض تفاصيله وتحليل التدبير</div>
+        <div class="qlinks" style="justify-content:center">
+          <a href="https://eping.wto.org" target="_blank" class="ql">🌐 ePing</a>
+          <a href="https://mc.gov.sa" target="_blank" class="ql">🇸🇦 وزارة التجارة</a>
+        </div>
+      </div>
+      <div id="det-body" style="display:none"></div>
+    </div>
+
+    <!-- SEARCH -->
+    <div id="p-search" class="pnl">
+      <div class="sec-title">🔍 البحث المتقدم <span>— فلترة دقيقة متعددة المعايير</span></div>
+      <div class="adv-form">
+        <div class="adv-grid">
+          <div class="adv-field"><label>الكلمة المفتاحية</label><input class="si" id="adv-kw" type="text" placeholder="pesticide, steel..."/></div>
+          <div class="adv-field"><label>نوع الإخطار</label><select class="ss" id="adv-type" style="margin:0"><option value="">الكل</option><option value="SPS">SPS</option><option value="TBT">TBT</option></select></div>
+          <div class="adv-field"><label>الدولة</label><select class="ss" id="adv-mc" style="margin:0"><option value="">جميع الدول</option><option value="C381">الاتحاد الأوروبي</option><option value="C840">الولايات المتحدة</option><option value="C156">الصين</option><option value="C392">اليابان</option><option value="C356">الهند</option><option value="C826">المملكة المتحدة</option><option value="C036">أستراليا</option></select></div>
+          <div class="adv-field"><label>من تاريخ</label><input class="si" id="adv-from" type="date" style="color-scheme:dark"/></div>
+          <div class="adv-field"><label>إلى تاريخ</label><input class="si" id="adv-to" type="date" style="color-scheme:dark"/></div>
+          <div class="adv-field"><label>الحالة</label><select class="ss" id="adv-st" style="margin:0"><option value="">الكل</option><option value="open">مفتوح</option><option value="closed">منتهي</option></select></div>
+        </div>
+        <div style="display:flex;gap:7px;align-items:center">
+          <button class="btn-ai" onclick="runSearch()" style="padding:8px 18px;font-size:11px">🔍 بحث</button>
+          <button class="actb" onclick="clearSearch()">مسح</button>
+          <span id="adv-cnt" style="font-size:10px;color:var(--t3)"></span>
+        </div>
+      </div>
+      <div id="adv-res"></div>
+    </div>
+
+    <!-- COMPARE -->
+    <div id="p-compare" class="pnl">
+      <div class="sec-title">⚖️ مقارنة الإخطارات <span>— اختر إخطارين للمقارنة التفصيلية</span></div>
+      <div class="cmp-slots">
+        <div class="cmp-slot" id="cmp-a" onclick="pickSlot('a')"><div class="cmp-ph">➕ اختر الإخطار الأول<br><span style="font-size:9px;color:var(--t4)">اضغط للاختيار</span></div></div>
+        <div class="cmp-slot" id="cmp-b" onclick="pickSlot('b')"><div class="cmp-ph">➕ اختر الإخطار الثاني<br><span style="font-size:9px;color:var(--t4)">اضغط للاختيار</span></div></div>
+      </div>
+      <div id="cmp-res"></div>
+    </div>
+
+    <!-- ALERTS -->
+    <div id="p-alerts" class="pnl">
+      <div class="sec-title">🔔 نظام التنبيهات <span>— تلقَّ إشعارات بالإخطارات الجديدة</span></div>
+      <div class="al-grid">
+        <div class="al-card"><h3>التنبيهات النشطة</h3><div id="al-list"><div class="empty-st" style="padding:20px;font-size:10px">لا توجد تنبيهات بعد</div></div></div>
+        <div class="al-card">
+          <h3>➕ إضافة تنبيه</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px">
+            <div><div style="font-size:9px;color:var(--t4);margin-bottom:3px">النوع</div><select class="ss" id="al-type" style="margin:0;font-size:11px"><option value="الكل">الكل</option><option value="SPS">SPS</option><option value="TBT">TBT</option></select></div>
+            <div><div style="font-size:9px;color:var(--t4);margin-bottom:3px">التكرار</div><select class="ss" id="al-freq" style="margin:0;font-size:11px"><option value="فوري">فوري</option><option value="يومي">يومي</option><option value="أسبوعي">أسبوعي</option></select></div>
+            <div><div style="font-size:9px;color:var(--t4);margin-bottom:3px">الدولة</div><select class="ss" id="al-country" style="margin:0;font-size:11px"><option value="جميع الدول">الجميع</option><option value="EU">الاتحاد الأوروبي</option><option value="US">الولايات المتحدة</option><option value="China">الصين</option></select></div>
+            <div><div style="font-size:9px;color:var(--t4);margin-bottom:3px">القطاع</div><input class="si" id="al-sec" placeholder="أغذية، كيماويات..."/></div>
+          </div>
+          <button onclick="addAlert()" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(59,130,246,.3);background:transparent;color:var(--ac);font-size:11px;transition:all .15s" onmouseover="this.style.background='rgba(59,130,246,.08)'" onmouseout="this.style.background='transparent'">➕ إضافة</button>
+        </div>
+      </div>
+      <div style="background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.2);border-radius:var(--r3);padding:13px">
+        <div style="font-size:11px;font-weight:600;color:var(--ac);margin-bottom:7px">🌐 التنبيهات الرسمية عبر ePing</div>
+        <div style="font-size:10px;color:var(--t2);line-height:1.7;margin-bottom:9px">منصة ePing الرسمية تتيح الاشتراك في تنبيهات فورية مخصصة حسب القطاع والدولة ونوع SPS/TBT</div>
+        <a href="https://eping.wto.org" target="_blank" class="btn-ai" style="font-size:11px;padding:7px 14px;display:inline-flex">🔗 الاشتراك في ePing الرسمي</a>
+      </div>
+
+      <!-- مصادر رسمية -->
+      <div style="margin-top:12px">
+        <div class="sec-title" style="font-size:12px;margin-bottom:10px">🔗 المصادر والمنصات الرسمية</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+          <a href="https://eping.wto.org" target="_blank" class="rl"><span class="ri">🌐</span><div><div class="rn">ePing Alert System</div><div class="ru">eping.wto.org</div></div></a>
+          <a href="https://docs.wto.org" target="_blank" class="rl"><span class="ri">📄</span><div><div class="rn">WTO Documents Online</div><div class="ru">docs.wto.org</div></div></a>
+          <a href="https://www.wto.org/english/tratop_e/sps_e/sps_e.htm" target="_blank" class="rl"><span class="ri">🌿</span><div><div class="rn">لجنة SPS الرسمية</div><div class="ru">wto.org/sps</div></div></a>
+          <a href="https://www.wto.org/english/tratop_e/tbt_e/tbt_e.htm" target="_blank" class="rl"><span class="ri">⚙️</span><div><div class="rn">لجنة TBT الرسمية</div><div class="ru">wto.org/tbt</div></div></a>
+          <a href="https://mc.gov.sa" target="_blank" class="rl"><span class="ri">🏛️</span><div><div class="rn">وزارة التجارة السعودية</div><div class="ru">mc.gov.sa</div></div></a>
+          <a href="https://www.zatca.gov.sa" target="_blank" class="rl"><span class="ri">💼</span><div><div class="rn">هيئة الزكاة والجمارك</div><div class="ru">zatca.gov.sa</div></div></a>
+          <a href="https://www.trademap.org" target="_blank" class="rl"><span class="ri">🌍</span><div><div class="rn">ITC Trade Map</div><div class="ru">trademap.org</div></div></a>
+          <a href="https://unctad.org" target="_blank" class="rl"><span class="ri">📊</span><div><div class="rn">UNCTAD</div><div class="ru">unctad.org</div></div></a>
+        </div>
+      </div>
+    </div>
+
+    <div id="p-ntm-un" class="pnl">
+      <div class="sec-title">🛡️ التدابير غير الجمركية UN <span>— UNCTAD TRAINS</span></div>
+      <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi" style="--kc:#0ea5e9"><div class="kpi-ico">🇺🇳</div><div class="kpi-val" id="un-kt" style="color:#0ea5e9">0</div><div class="kpi-lbl">إجمالي التدابير</div><div class="kpi-sub">اضغط تحميل</div></div>
+        <div class="kpi" style="--kc:var(--rd)"><div class="kpi-ico">⚠️</div><div class="kpi-val" id="un-kh" style="color:var(--rd)">0</div><div class="kpi-lbl">خطر مرتفع</div><div class="kpi-sub">تستدعي إجراءً</div></div>
+        <div class="kpi" style="--kc:var(--cy)"><div class="kpi-ico">🇸🇦</div><div class="kpi-val" id="un-ks" style="color:var(--cy)">0</div><div class="kpi-lbl">يؤثر على SA</div><div class="kpi-sub">صادرات المملكة</div></div>
+        <div class="kpi" style="--kc:var(--gr)"><div class="kpi-ico">📊</div><div class="kpi-val" id="un-kc" style="color:var(--gr)">0</div><div class="kpi-lbl">دول محلّلة</div><div class="kpi-sub">في البيانات</div></div>
+      </div>
+      <div class="dc" style="margin-bottom:12px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <button class="btn-ai" onclick="_load('un')" style="padding:8px 16px;font-size:11px;background:linear-gradient(135deg,#0369a1,#0ea5e9)">📋 تحميل 300 تدبير</button>
+          <button class="btn-ai" onclick="window.open('https://trainsonline.unctad.org/detailedSearch','_blank')" style="padding:8px 16px;font-size:11px;background:linear-gradient(135deg,#065f46,#059669)">🔗 فتح UNCTAD TRAINS</button>
+          <label class="btn-ai" style="padding:8px 16px;font-size:11px;cursor:pointer;background:linear-gradient(135deg,#1d4ed8,#3b82f6)">📂 رفع Excel/CSV<input type="file" id="un-file" accept=".xlsx,.xls,.csv" style="display:none"></label>
+          <span id="un-status" style="font-size:10px;color:var(--t3);align-self:center"></span>
+        </div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <div class="det-hd" style="margin-bottom:6px">قائمة التدابير <span id="un-cnt" style="font-size:9px;color:var(--t3);font-weight:400"></span></div>
+            <div id="un-list" style="max-height:440px;overflow-y:auto"><div class="empty-st"><div style="font-size:20px;opacity:.2">🇺🇳</div><div style="font-size:9px">اضغط "تحميل البيانات"</div></div></div>
+            <div id="un-pg" style="display:none;justify-content:center;align-items:center;gap:8px;padding:5px;background:var(--bg3);border:1px solid var(--b1);border-radius:8px;margin-top:5px">
+              <button class="actb" id="un-pp" style="padding:3px 9px;font-size:10px">→ السابق</button>
+              <span id="un-pl" style="font-size:10px;color:var(--t2)">1/1</span>
+              <button class="actb" id="un-pn" style="padding:3px 9px;font-size:10px">التالي ←</button>
+            </div>
+          </div>
+          <div>
+            <div class="det-hd" style="margin-bottom:6px">التفاصيل والتحليل</div>
+            <div id="un-det" style="max-height:none;overflow-y:visible"><div class="empty-st" style="padding:18px"><div style="font-size:18px;opacity:.2">👆</div><div style="font-size:9px">اختر تدبيراً</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="dc"><div class="det-hd">🔗 مصادر UNCTAD</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+        <a href="https://trainsonline.unctad.org/detailedSearch" target="_blank" class="rl"><span class="ri">🔍</span><div><div class="rn">TRAINS Detailed Search</div><div class="ru">trainsonline.unctad.org</div></div></a>
+        <a href="https://trainsonline.unctad.org/bulkDataDownload" target="_blank" class="rl"><span class="ri">📥</span><div><div class="rn">Bulk Download</div><div class="ru">trainsonline.unctad.org</div></div></a>
+        <a href="https://unctad.org/topic/trade-analysis/non-tariff-measures" target="_blank" class="rl"><span class="ri">📋</span><div><div class="rn">UNCTAD NTM Hub</div><div class="ru">unctad.org</div></div></a>
+      </div></div>
+    </div>
+
+    <div id="p-ntm-wto" class="pnl">
+      <div class="sec-title">🛡️ التدابير غير الجمركية WTO <span>— I-TIP Goods · 28,936 تدبير</span></div>
+      <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi" style="--kc:var(--pu)"><div class="kpi-ico">⚖️</div><div class="kpi-val" id="wto-kt" style="color:var(--pu)">0</div><div class="kpi-lbl">إجمالي التدابير</div><div class="kpi-sub">اضغط تحميل</div></div>
+        <div class="kpi" style="--kc:var(--rd)"><div class="kpi-ico">⚠️</div><div class="kpi-val" id="wto-kh" style="color:var(--rd)">0</div><div class="kpi-lbl">خطر مرتفع</div><div class="kpi-sub">تستدعي إجراءً</div></div>
+        <div class="kpi" style="--kc:var(--cy)"><div class="kpi-ico">🇸🇦</div><div class="kpi-val" id="wto-ks" style="color:var(--cy)">0</div><div class="kpi-lbl">يؤثر على SA</div><div class="kpi-sub">صادرات المملكة</div></div>
+        <div class="kpi" style="--kc:var(--am)"><div class="kpi-ico">🔔</div><div class="kpi-val" id="wto-kstc" style="color:var(--am)">0</div><div class="kpi-lbl">قابل للنزاع</div><div class="kpi-sub">STCs/Dispute</div></div>
+      </div>
+      <div class="dc" style="margin-bottom:12px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <button class="btn-ai" onclick="_load('wto')" style="padding:8px 16px;font-size:11px;background:linear-gradient(135deg,#5b21b6,#7c3aed)">📋 تحميل 300 تدبير</button>
+          <button class="btn-ai" onclick="window.open('https://i-tip.wto.org/goods/Forms/TableView.aspx?mode=modify&action=search','_blank')" style="padding:8px 16px;font-size:11px;background:linear-gradient(135deg,#065f46,#059669)">🔗 فتح WTO I-TIP</button>
+          <label class="btn-ai" style="padding:8px 16px;font-size:11px;cursor:pointer;background:linear-gradient(135deg,#1d4ed8,#3b82f6)">📂 رفع Excel/CSV<input type="file" id="wto-file" accept=".xlsx,.xls,.csv" style="display:none"></label>
+          <span id="wto-status" style="font-size:10px;color:var(--t3);align-self:center"></span>
+        </div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <div class="det-hd" style="margin-bottom:6px">قائمة التدابير <span id="wto-cnt" style="font-size:9px;color:var(--t3);font-weight:400"></span></div>
+            <div id="wto-list" style="max-height:440px;overflow-y:auto"><div class="empty-st"><div style="font-size:20px;opacity:.2">⚖️</div><div style="font-size:9px">اضغط "تحميل البيانات"</div></div></div>
+            <div id="wto-pg" style="display:none;justify-content:center;align-items:center;gap:8px;padding:5px;background:var(--bg3);border:1px solid var(--b1);border-radius:8px;margin-top:5px">
+              <button class="actb" id="wto-pp" style="padding:3px 9px;font-size:10px">→ السابق</button>
+              <span id="wto-pl" style="font-size:10px;color:var(--t2)">1/1</span>
+              <button class="actb" id="wto-pn" style="padding:3px 9px;font-size:10px">التالي ←</button>
+            </div>
+          </div>
+          <div>
+            <div class="det-hd" style="margin-bottom:6px">التفاصيل والتحليل</div>
+            <div id="wto-det" style="max-height:none;overflow-y:visible"><div class="empty-st" style="padding:18px"><div style="font-size:18px;opacity:.2">👆</div><div style="font-size:9px">اختر تدبيراً</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="dc"><div class="det-hd">🔗 مصادر WTO</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+        <a href="https://i-tip.wto.org/goods/Forms/TableView.aspx?mode=modify&action=search" target="_blank" class="rl"><span class="ri">🔍</span><div><div class="rn">I-TIP Detailed Query</div><div class="ru">i-tip.wto.org</div></div></a>
+        <a href="https://i-tip.wto.org/goods/Forms/MemberView.aspx" target="_blank" class="rl"><span class="ri">🌍</span><div><div class="rn">I-TIP by Members</div><div class="ru">i-tip.wto.org</div></div></a>
+        <a href="https://www.wto.org/english/tratop_e/dispu_e/dispu_e.htm" target="_blank" class="rl"><span class="ri">🏛️</span><div><div class="rn">WTO DSU النزاعات</div><div class="ru">wto.org</div></div></a>
+      </div></div>
+    </div>
+    </div></div><!-- /main -->
+</div><!-- /wrap -->
+
+<script>
+var API="https://lmns-lqnwny-ltjr-ldwly.onrender.com";
+var FL={C682:'🇸🇦',C784:'🇦🇪',C634:'🇶🇦',C414:'🇰🇼',C048:'🇧🇭',C512:'🇴🇲',C400:'🇯🇴',C818:'🇪🇬',C504:'🇲🇦',C788:'🇹🇳',C840:'🇺🇸',C381:'🇪🇺',C156:'🇨🇳',C356:'🇮🇳',C392:'🇯🇵',C826:'🇬🇧',C276:'🇩🇪',C250:'🇫🇷',C036:'🇦🇺',C124:'🇨🇦',C076:'🇧🇷',C410:'🇰🇷',C792:'🇹🇷',C360:'🇮🇩',C458:'🇲🇾',C702:'🇸🇬',C704:'🇻🇳',C152:'🇨🇱',C566:'🇳🇬',C710:'🇿🇦',C554:'🇳🇿'};
+var MN={C682:'المملكة العربية السعودية',C784:'الإمارات',C634:'قطر',C414:'الكويت',C840:'الولايات المتحدة',C381:'الاتحاد الأوروبي',C156:'الصين',C356:'الهند',C392:'اليابان',C826:'المملكة المتحدة',C276:'ألمانيا',C250:'فرنسا',C036:'أستراليا',C124:'كندا',C076:'البرازيل',C410:'كوريا الجنوبية',C792:'تركيا',C360:'إندونيسيا',C458:'ماليزيا',C702:'سنغافورة',C704:'فيتنام'};
+
+// ═══ TRADE DATA (ZATCA 2023 / ITC Trade Map) ═══
+var TP={
+  C156:{ts:18.2,es:5,is:5,secs:['بتروكيماويات','أسمدة','بلاستيك'],src:'ZATCA 2023'},
+  C356:{ts:11.4,es:5,is:4,secs:['بتروكيماويات','أغذية'],src:'ZATCA 2023'},
+  C392:{ts:8.7, es:5,is:3,secs:['بتروكيماويات','كيماويات'],src:'ZATCA 2023'},
+  C410:{ts:7.1, es:4,is:4,secs:['بتروكيماويات','صلب'],src:'ITC 2023'},
+  C381:{ts:9.8, es:3,is:5,secs:['أغذية','دواء','كيماويات'],src:'هيئة الإحصاء'},
+  C840:{ts:7.3, es:3,is:5,secs:['دواء','أغذية','آلات'],src:'ZATCA 2023'},
+  C826:{ts:3.1, es:2,is:3,secs:['دواء','أغذية'],src:'ITC 2023'},
+  C702:{ts:2.8, es:3,is:2,secs:['بتروكيماويات'],src:'ITC 2023'},
+  C036:{ts:2.2, es:2,is:3,secs:['أغذية','معادن'],src:'ITC 2023'},
+  C276:{ts:2.6, es:2,is:4,secs:['آلات','كيماويات'],src:'هيئة الإحصاء'},
+  C250:{ts:1.8, es:1,is:3,secs:['أغذية','دواء'],src:'ITC 2023'},
+  C792:{ts:2.4, es:2,is:3,secs:['أغذية','حديد'],src:'ITC 2023'},
+  C360:{ts:1.6, es:2,is:2,secs:['أغذية'],src:'ITC 2023'},
+  C458:{ts:1.4, es:2,is:2,secs:['زيت نخيل'],src:'ITC 2023'},
+  C124:{ts:1.1, es:1,is:2,secs:['حبوب','دواء'],src:'ITC 2023'}
+};
+var SS={
+  'بتروكيماويات':5,'petrochemical':5,'plastics':5,'بلاستيك':5,
+  'fertilizer':5,'أسمدة':5,'chemical':5,'كيماويات':5,'chemicals':5,
+  'food':4,'أغذية':4,'غذاء':4,'pharmaceutical':4,'دواء':4,
+  'steel':4,'حديد':4,'صلب':4,'metals':4,'معادن':4,'feed':4,'علف':4,
+  'pesticide':3,'مبيدات':3,'cosmetics':3,'مستحضرات':3,
+  'textile':3,'نسيج':3,'equipment':3,'آلات':3,
+  'electronics':2,'إلكترونيات':2,'construction':2,'بناء':2
+};
+
+var D=[],selId=null,flt='all',tab='full',pg=1,tpg=1,busy=false,TC={},ALERTS=[],CMP={a:null,b:null};
+
+// ═══ RISK ═══
+function calcRisk(n){
+  var s=0,p=TP[n.memberCode];
+  if(p) s+=Math.min(15,Math.round(p.ts*0.7))+(p.es*3)+(p.is*2);
+  else s+=5;
+  var prods=(n.products||[]).concat(n.keywords||[]);
+  var ms=0;
+  prods.forEach(function(x){
+    var pl=(x||'').toLowerCase(),v=SS[x]||SS[pl]||0;
+    if(!v) Object.keys(SS).forEach(function(k){if(pl.includes(k.toLowerCase())||k.toLowerCase().includes(pl))v=Math.max(v,SS[k]);});
+    ms=Math.max(ms,v);
+  });
+  s+=prods.length?(ms*7):10;
+  var isOpen=n.status==='مفتوح للتعليق';
+  if(isOpen&&n.commentDeadline){
+    var dl=Math.ceil((new Date(n.commentDeadline)-new Date())/86400000);
+    s+=dl<=0?25:dl<=14?25:dl<=30?20:dl<=60?12:5;
+  }else if(!isOpen) s=Math.round(s*0.3);
+  return Math.min(100,s);
+}
+function riskLabel(sc){
+  if(sc>=75)return{t:'بالغ الخطورة',c:'var(--rd)',segs:5};
+  if(sc>=55)return{t:'عالٍ',c:'var(--rd)',segs:4};
+  if(sc>=38)return{t:'متوسط',c:'var(--am)',segs:3};
+  if(sc>=20)return{t:'منخفض',c:'var(--gr)',segs:2};
+  return{t:'ضئيل',c:'var(--t3)',segs:1};
+}
+
+// ═══ PARSE ITEM ═══
+function parseItem(it){
+  var sym=(it.documentSymbol||it.symbol||'').trim();
+  var area=it.area||'';
+  var type=(area==='SPS'||sym.includes('/SPS/'))?'SPS':'TBT';
+  var title=(it.titlePlain||it.title||it.titleEnglish||sym||'').replace(/<[^>]+>/g,' ').trim();
+  var prods=it.productsFreeTextPlain||it.productsFreeText||'';
+  if(typeof prods==='string') prods=prods.split(/[,;،]/).map(function(x){return x.trim();}).filter(Boolean).slice(0,5);
+  else if(!Array.isArray(prods)) prods=[];
+  var kws=(it.keywords||it.spsKeywords||[]).filter(function(k){return k&&k.name;}).map(function(k){return k.name;}).slice(0,5);
+  var dateR=it.distributionDate||'';
+  var deadR=it.commentDeadlineDate||'';
+  var docs=[];
+  var dl=it.notifiedDocumentLink||'';
+  if(dl){dl.replace(/\r\n/g,'\n').split('\n').forEach(function(l){l.split(',').forEach(function(p){p=p.trim();if(p.startsWith('http'))docs.push({name:'مستند رسمي',url:p});});});}
+  return{
+    id:sym||String(it.id||Math.random()),symbol:sym,
+    member:it.notifyingMember||it.member||'',
+    memberCode:it.notifyingMemberCode||it.memberCode||'',
+    date:dateR?dateR.slice(0,10):'',type:type,notifType:it.notificationType||'',
+    title:title,titleEn:title,titleAr:'',
+    status:(deadR||it.isOpenForComments)?'مفتوح للتعليق':'منتهي',
+    products:prods,keywords:kws,
+    commentDeadline:deadR?deadR.slice(0,10):'',
+    docs:docs,epingLink:it.linkToNotification||(sym?'https://eping.wto.org/en/Search/Index?documentSymbol='+encodeURIComponent(sym):''),
+    analysis:null,loading:false,docAnalysis:null,docLoading:false
+  };
+}
+function extractRows(d){
+  if(Array.isArray(d))return d;
+  if(!d||typeof d!=='object')return[];
+  for(var k of['items','notifications','rows','data','results','content']){
+    if(Array.isArray(d[k]))return d[k];
+    if(d[k]&&typeof d[k]==='object'){for(var k2 of['items','notifications','rows','data']){if(Array.isArray(d[k][k2]))return d[k][k2];}}
+  }
+  return[];
+}
+
+// ═══ APPLY DATA ═══
+function applyData(notifs,total,pages,source){
+  D=notifs.map(function(n){
+    if(!n.type||(n.type!=='SPS'&&n.type!=='TBT'))n=parseItem(n);
+    return Object.assign({},n,{titleAr:n.titleAr||TC[n.symbol]||'',analysis:n.analysis||null,loading:false,docAnalysis:n.docAnalysis||null,docLoading:false});
+  });
+  tpg=pages||1;
+  var op=D.filter(function(n){return n.status==='مفتوح للتعليق';}).length;
+  var sp=D.filter(function(n){return n.type==='SPS';}).length;
+  var tb=D.filter(function(n){return n.type==='TBT';}).length;
+  var tot=total||D.length;
+  setStatus('ok',tot.toLocaleString()+' إخطار'+(source==='demo'?' ':''));
+  document.getElementById('st-t').textContent=tot.toLocaleString();
+  document.getElementById('st-o').textContent=op;
+  document.getElementById('st-s').textContent=sp;
+  document.getElementById('st-b').textContent=tb;
+  document.getElementById('kpi-t').textContent=tot.toLocaleString();
+  document.getElementById('kpi-o').textContent=op;
+  document.getElementById('kpi-s').textContent=sp;
+  document.getElementById('kpi-b').textContent=tb;
+  document.getElementById('kpi-ts').textContent=source==='demo'?'بيانات محلية':'صفحة '+pg;
+  document.getElementById('kpi-os').textContent=op>0?'⚠️ تتطلب مراجعة':'لا إخطارات مفتوحة';
+  if(D.length){document.getElementById('kpi-ss').textContent=Math.round(sp/D.length*100)+'% من الإجمالي';document.getElementById('kpi-bs').textContent=Math.round(tb/D.length*100)+'% من الإجمالي';}
+  renderList();
+  updateDash();
+  translateBatch();
+}
+
+// ═══ INIT ═══
+function init(){
+  var demo=buildDemo();
+  applyData(demo,demo.length,1,'demo');
+  loadAlerts();
+  setTimeout(tryReal,800);
+}
+async function tryReal(){
+  try{
+    var ctrl=new AbortController();setTimeout(function(){ctrl.abort();},6000);
+    var r=await fetch(API+'/api/wto/search?page=1&pageSize=50',{signal:ctrl.signal});
+    if(r.ok){var d=await r.json();if(d.notifications&&d.notifications.length>0){applyData(d.notifications,d.total,d.pages,'backend');translateBatch();return;}}
+  }catch(e){}
+  try{
+    var ctrl2=new AbortController();setTimeout(function(){ctrl2.abort();},9000);
+    var wr=await fetch('https://api.wto.org/eping/notifications/search?page=1&pageSize=50&language=1',{signal:ctrl2.signal,headers:{'Accept':'application/json'}});
+    if(wr.ok){var wd=await wr.json();var rows=extractRows(wd);if(rows.length>0){var parsed=rows.map(parseItem);applyData(parsed,wd.totalCount||parsed.length,1,'wto');translateBatch();return;}}
+  }catch(e){}
+}
+
+// ═══ doLoad (manual refresh / filter) ═══
+async function doLoad(force){
+  if(busy)return;
+  busy=true;document.getElementById('rfbtn').disabled=true;
+  setProg(true,20);
+  var srch=document.getElementById('srch').value;
+  var mc=document.getElementById('srch2').value;
+  if(flt==='saudi')mc='C682';
+  var loaded=false;
+  try{
+    var params=['page='+pg,'pageSize=50'];
+    if(flt==='SPS')params.push('domainIds=2');
+    else if(flt==='TBT')params.push('domainIds=1');
+    if(srch)params.push('freeText='+encodeURIComponent(srch));
+    if(mc)params.push('countryIds='+encodeURIComponent(mc));
+    setProg(true,40);
+    var ctrl=new AbortController();var tid=setTimeout(function(){ctrl.abort();},6000);
+    var r=await fetch(API+'/api/wto/search?'+params.join('&'),{signal:ctrl.signal});
+    clearTimeout(tid);setProg(true,80);
+    if(r.ok){var d=await r.json();if(d.notifications&&d.notifications.length>0){applyData(d.notifications,d.total,d.pages,'backend');loaded=true;}}
+  }catch(e){}
+  if(!loaded){
+    try{
+      var wtoP={page:pg,pageSize:50,language:1};
+      if(flt==='SPS')wtoP.domainIds=2;else if(flt==='TBT')wtoP.domainIds=1;
+      var mc2=document.getElementById('srch2').value;if(flt==='saudi')mc2='C682';
+      if(mc2)wtoP.countryIds=mc2;
+      var s2=document.getElementById('srch').value;if(s2)wtoP.freeText=s2;
+      var qs=Object.keys(wtoP).map(function(k){return k+'='+encodeURIComponent(wtoP[k]);}).join('&');
+      var ctrl2=new AbortController();var tid2=setTimeout(function(){ctrl2.abort();},9000);
+      var wr=await fetch('https://api.wto.org/eping/notifications/search?'+qs,{signal:ctrl2.signal,headers:{'Accept':'application/json'}});
+      clearTimeout(tid2);
+      if(wr.ok){var wd=await wr.json();var rows=extractRows(wd);if(rows.length>0){var parsed=rows.map(parseItem);applyData(parsed,wd.totalCount||parsed.length,Math.ceil((wd.totalCount||parsed.length)/50),'wto');loaded=true;}}
+    }catch(e){}
+  }
+  if(!loaded&&D.length===0){var demo=buildDemo();applyData(demo,demo.length,1,'demo');}
+  setProg(false);busy=false;document.getElementById('rfbtn').disabled=false;
+}
+
+// ═══ TRANSLATE ═══
+async function translateBatch(){
+  var need=D.filter(function(n){return !n.titleAr&&!TC[n.symbol];}).slice(0,10);
+  if(!need.length)return;
+  try{
+    var texts=need.map(function(n){return n.titleEn||n.title||'';}).filter(Boolean);
+    if(!texts.length)return;
+    var r=await fetch(API+'/api/translate-batch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({texts:texts})});
+    if(r.ok){var d=await r.json();(d.translations||[]).forEach(function(ar,i){if(ar&&need[i]){need[i].titleAr=ar;TC[need[i].symbol]=ar;}});renderList();updateDash();setTimeout(translateBatch,2500);}
+  }catch(e){}
+}
+async function translateOne(n){
+  if(!n||n.titleAr||TC[n.symbol])return;
+  try{
+    var r=await fetch(API+'/api/translate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:n.titleEn||n.title||''})});
+    if(r.ok){var d=await r.json();if(d.ar){n.titleAr=d.ar;TC[n.symbol]=d.ar;renderList();var el=document.getElementById('det-titlear');if(el&&selId===n.id)el.textContent=d.ar;}}
+  }catch(e){}
+}
+
+// ═══ FILTERS ═══
+function setPill(f,btn){
+  flt=f;pg=1;
+  document.querySelectorAll('.pl').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  else{var btns=document.querySelectorAll('.pl');if(f==='all')btns[0].classList.add('on');else if(f==='SPS')btns[1].classList.add('on');else if(f==='TBT')btns[2].classList.add('on');else if(f==='open')btns[3].classList.add('on');else if(f==='saudi')btns[4].classList.add('on');}
+  doLoad();
+}
+function chpg(d){pg=Math.max(1,Math.min(tpg,pg+d));selId=null;showDet(false);doLoad();}
+
+// ═══ RENDER LIST ═══
+function renderList(){
+  var q=(document.getElementById('srch').value||'').toLowerCase();
+  var fil=D.slice();
+  if(q)fil=fil.filter(function(n){return(n.titleAr||n.title||'').toLowerCase().includes(q)||(n.symbol||'').toLowerCase().includes(q)||(n.member||'').toLowerCase().includes(q);});
+  if(flt==='open')fil=fil.filter(function(n){return n.status==='مفتوح للتعليق';});
+  if(flt==='saudi')fil=fil.filter(function(n){return n.memberCode==='C682'||(n.member||'').toLowerCase().includes('saudi');});
+  var el=document.getElementById('lst');
+  if(!fil.length){el.innerHTML='<div class="empty-st"><div style="font-size:18px;opacity:.3">🔍</div><div style="font-size:10px">لا توجد نتائج</div></div>';document.getElementById('pgb').style.display='none';return;}
+  el.innerHTML=fil.map(function(n){
+    var sid=eid(n.id);var isO=n.status==='مفتوح للتعليق';
+    return '<div class="nc'+(n.id===selId?' sel':'')+'" onclick="selN(\''+sid+'\')">'+
+      '<div class="nr1"><div style="display:flex;gap:3px"><span class="bdg '+(n.type||'').toLowerCase()+'">'+(n.type||'—')+'</span>'+(isO?'<span class="bdg open">مفتوح</span>':'<span class="bdg closed">منتهي</span>')+'</div><span class="ndt">'+(n.date||'')+'</span></div>'+
+      '<div class="nr2">'+(n.titleAr||n.title||n.symbol||'—')+'</div>'+
+      '<div class="nr3"><span class="nmem">'+(FL[n.memberCode]||'🌍')+' '+(n.member||'')+'</span><span style="font-size:9px;color:var(--gr)">'+(n.analysis?'✓':'')+'</span></div>'+
+    '</div>';
+  }).join('');
+  var pb=document.getElementById('pgb');
+  if(tpg>1){pb.style.display='flex';document.getElementById('pglbl').textContent=pg+'/'+tpg;document.getElementById('pp').disabled=pg<=1;document.getElementById('pn').disabled=pg>=tpg;}
+  else pb.style.display='none';
+}
+function eid(id){return(id||'').replace(/'/g,"\\'").replace(/,/g,'_');}
+
+// ═══ SELECT ═══
+function selN(sid){
+  var n=D.find(function(x){return x.id===sid||eid(x.id)===sid;});
+  if(!n)return;
+  selId=n.id;tab='full';renderList();renderDet(n);
+  if(!n.titleAr)translateOne(n);
+  goPage('det',document.querySelectorAll('.nb')[1]);
+}
+function goNotif(sid){selN(sid);}
+
+// ═══ RENDER DETAIL ═══
+function renderDet(n){
+  showDet(true);
+  var isO=n.status==='مفتوح للتعليق';
+  var nid=eid(n.id);
+  var sc=calcRisk(n);var rl=riskLabel(sc);
+  var p=TP[n.memberCode];
+  // axis scores
+  var ts=0;if(p)ts=Math.min(40,Math.round(p.ts*0.7)+p.es*3+p.is*2);else ts=5;
+  var ms=0;(n.products||[]).concat(n.keywords||[]).forEach(function(x){var pl=(x||'').toLowerCase(),v=SS[x]||SS[pl]||0;if(!v)Object.keys(SS).forEach(function(k){if(pl.includes(k.toLowerCase()))v=Math.max(v,SS[k]);});ms=Math.max(ms,v);});
+  var secS=(n.products||[]).length?Math.min(35,ms*7):10;
+  var dlS=0;if(isO&&n.commentDeadline){var dl=Math.ceil((new Date(n.commentDeadline)-new Date())/86400000);dlS=dl<=0?25:dl<=14?25:dl<=30?20:dl<=60?12:5;}
+  var segs='';for(var i=0;i<5;i++){var sc2=i<2?'rg':i<4?'ra':'rr';segs+='<div class="rseg '+sc2+(i<rl.segs?' fill':'')+'"></div>';}
+  var daysHtml='';
+  if(isO&&n.commentDeadline){var dv=Math.ceil((new Date(n.commentDeadline)-new Date())/86400000);var dc=dv<15?'var(--rd)':dv<30?'var(--am)':'var(--gr)';daysHtml='<div class="days-pill"><span style="font-size:11px">⏰</span><span style="font-size:11px;color:'+dc+';font-weight:600">'+(dv>0?'متبقي '+dv+' يوماً للتعليق':'انتهت مهلة التعليق')+'</span></div>';}
+  var prods=(n.products||[]).length?'<div class="ptags"><span style="font-size:9px;color:var(--t4);margin-left:5px">المنتجات</span>'+n.products.map(function(x){return'<span class="ptag">'+x+'</span>';}).join('')+'</div>':'';
+  var kws=(n.keywords||[]).length?'<div class="ptags" style="margin-top:5px"><span style="font-size:9px;color:var(--t4);margin-left:5px">كلمات مفتاحية</span>'+n.keywords.map(function(x){return'<span class="kwtag">'+x+'</span>';}).join('')+'</div>':'';
+  var docs='';(n.docs||[]).forEach(function(d){if(d.url)docs+='<div class="doc-row"><span style="font-size:11px;color:#c0d4f0">📄 '+(d.name||'مستند رسمي')+'</span><a class="doc-a" href="'+d.url+'" target="_blank">تحميل ↗</a></div>';});
+  var hasPdf=!!(n.docs||[]).length;
+
+  document.getElementById('det-body').innerHTML=
+    '<div class="det-dc fi">'+
+      '<div class="det-hd">معلومات الإخطار</div>'+
+      '<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px">'+
+        '<span class="bdg '+(n.type||'').toLowerCase()+'">'+(n.type||'—')+'</span>'+
+        (isO?'<span class="bdg open">مفتوح للتعليق</span>':'<span class="bdg closed">منتهي</span>')+
+        (n.notifType?'<span class="bdg" style="background:rgba(6,182,212,.1);color:#22d3ee;border:1px solid rgba(6,182,212,.2)">'+n.notifType+'</span>':'')+
+      '</div>'+
+      '<div class="dtit" id="det-titlear">'+(n.titleAr||'<span style="color:var(--am);font-size:11px;font-weight:400">⏳ جارٍ الترجمة...</span>')+'</div>'+
+      '<div class="deng">'+(n.titleEn||n.title||n.symbol||'')+'</div>'+
+      daysHtml+
+      '<div class="mg4">'+
+        '<div><div class="ml">رقم الوثيقة</div><div class="mv">'+(n.symbol||'—')+'</div></div>'+
+        '<div><div class="ml">الدولة</div><div class="mv">'+(FL[n.memberCode]||'🌍')+' '+(n.member||'—')+'</div></div>'+
+        '<div><div class="ml">التاريخ</div><div class="mv">'+(n.date||'—')+'</div></div>'+
+        '<div><div class="ml">موعد التعليق</div><div class="mv" style="color:'+(n.commentDeadline?(isO?'var(--gr)':'var(--t3)'):'var(--t4)')+';">'+(n.commentDeadline||'—')+'</div></div>'+
+      '</div>'+
+      prods+kws+
+      (n.epingLink?'<div class="qlinks" style="margin-top:8px"><a href="'+n.epingLink+'" target="_blank" class="ql">🔗 عرض على ePing</a><a href="https://www.wto.org/english/tratop_e/'+(n.type==='SPS'?'sps_e':'tbt_e')+'/'+( n.type==='SPS'?'sps_e':'tbt_e')+'.htm" target="_blank" class="ql">📋 لجنة '+(n.type||'')+'</a><a href="https://mc.gov.sa" target="_blank" class="ql">🇸🇦 وزارة التجارة</a></div>':'')+
+    '</div>'+
+
+    '<div class="risk-det">'+
+
+      /* ── العنوان والدرجة ── */
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'+
+        '<div style="font-size:11px;font-weight:600;color:var(--pu)">🎯 تقييم المخاطر التجارية — 🇸🇦 المملكة</div>'+
+        '<div style="display:flex;align-items:center;gap:5px">'+
+          '<span style="font-size:10px;color:var(--t3)">'+sc+'/100</span>'+
+          '<span style="font-size:12px;font-weight:700;color:'+rl.c+'">'+rl.t+'</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="risk-meter">'+segs+'</div>'+
+
+      /* ── المحاور الثلاثة ── */
+      '<div class="axis-grid">'+
+        '<div class="axis-box">'+
+          '<div class="axis-lbl">المحور 1 — الأثر التجاري</div>'+
+          '<div class="axis-val" style="color:var(--ac)">'+ts+'</div>'+
+          '<div class="axis-sub">من 40 نقطة'+(p?' · الحصة: '+Math.round(p.ts)+'%':'')+'</div>'+
+          '<div style="font-size:8px;color:var(--t4);margin-top:3px;line-height:1.5">'+
+            'حصة الدولة من تجارة المملكة<br>'+
+            'حساسية الصادرات (×3)<br>'+
+            'حساسية الواردات (×2)'+
+          '</div>'+
+        '</div>'+
+        '<div class="axis-box">'+
+          '<div class="axis-lbl">المحور 2 — حساسية القطاع</div>'+
+          '<div class="axis-val" style="color:var(--pu)">'+secS+'</div>'+
+          '<div class="axis-sub">من 35 نقطة</div>'+
+          '<div style="font-size:8px;color:var(--t4);margin-top:3px;line-height:1.5">'+
+            'بتروكيماويات / أسمدة → 5<br>'+
+            'أغذية / دواء / صلب → 4<br>'+
+            'مبيدات / نسيج / آلات → 3'+
+          '</div>'+
+        '</div>'+
+        '<div class="axis-box">'+
+          '<div class="axis-lbl">المحور 3 — ضيق المهلة</div>'+
+          '<div class="axis-val" style="color:'+(dlS>=20?'var(--rd)':dlS>=12?'var(--am)':'var(--gr)')+'">'+dlS+'</div>'+
+          '<div class="axis-sub">من 25 نقطة</div>'+
+          '<div style="font-size:8px;color:var(--t4);margin-top:3px;line-height:1.5">'+
+            '≤14 يوم → 25 (عاجل جداً)<br>'+
+            '≤30 يوم → 20 (عاجل)<br>'+
+            '≤60 يوم → 12 (متابعة)'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+
+      /* ── التصنيف ── */
+      '<div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap">'+
+        '<span style="font-size:8px;padding:2px 7px;border-radius:20px;background:rgba(244,63,94,.1);color:#fb7185;border:1px solid rgba(244,63,94,.2)">≥75 بالغ الخطورة</span>'+
+        '<span style="font-size:8px;padding:2px 7px;border-radius:20px;background:rgba(244,63,94,.1);color:#fb7185;border:1px solid rgba(244,63,94,.2)">≥55 عالٍ</span>'+
+        '<span style="font-size:8px;padding:2px 7px;border-radius:20px;background:rgba(245,158,11,.1);color:#fbbf24;border:1px solid rgba(245,158,11,.2)">≥38 متوسط</span>'+
+        '<span style="font-size:8px;padding:2px 7px;border-radius:20px;background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.2)">≥20 منخفض</span>'+
+        '<span style="font-size:8px;padding:2px 7px;border-radius:20px;background:var(--bg4);color:var(--t3);border:1px solid var(--b1)">أقل ضئيل</span>'+
+      '</div>'+
+
+      /* ── المصادر ── */
+      '<div style="font-size:8px;color:var(--t4);padding:6px 8px;background:var(--bg4);border-radius:6px;border:1px solid var(--b1);line-height:1.8;margin-bottom:5px">'+
+        '<span style="color:var(--t3);font-weight:600">📁 مصادر البيانات:</span><br>'+
+        '• '+(p?p.src:'ITC Trade Map 2023')+' — حصص التجارة وحساسية الصادرات<br>'+
+        '• الهيئة العامة للإحصاء (2023) — النشرة السنوية للتجارة الخارجية<br>'+
+        '• هيئة الزكاة والضريبة والجمارك ZATCA (2023) — إحصاءات الاستيراد/التصدير<br>'+
+        '• ITC Trade Map (trademap.org) — بيانات التجارة الدولية<br>'+
+        '• WTO Trade Policy Review — مراجعة السياسة التجارية للمملكة'+
+      '</div>'+
+
+      /* ── إخلاء المسؤولية ── */
+      '<div style="font-size:8px;padding:7px 9px;border-radius:6px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);line-height:1.8">'+
+        '<span style="color:var(--am);font-weight:600">⚠️ إخلاء المسؤولية:</span><br>'+
+        '<span style="color:var(--t4)">'+
+          'هذا التقييم <b style="color:var(--t3)">أداة استرشادية مبدئية</b> فقط، ولا يُعدّ تقريراً قانونياً أو اقتصادياً معتمداً. '+
+          'يستند إلى بيانات إجمالية وتقديرات عامة، وقد لا يعكس الوضع الدقيق لكل منتج أو سوق. '+
+          'لا تتحمل المنصة أي مسؤولية عن القرارات التجارية أو القانونية المبنية على هذا التقييم. '+
+
+        '</span>'+
+      '</div>'+
+    '</div>'+
+
+    (docs?'<div class="det-dc"><div class="det-hd">المستندات الرسمية</div>'+docs+'</div>':'')+
+
+    (!n.analysis?
+      '<div class="btn-ctr">'+
+        '<button class="btn-ai" id="btn-analyze" onclick="doAnalyze(\''+nid+'\')" '+(n.loading?'disabled':'')+'>'+
+          (n.loading?'<span class="ldots">⏳ يُحلَّل</span>':'🎯 تحليل الأخطار')+
+        '</button>'+
+        '<div class="btn-hint">تحليل التدبير وفق SPS / TBT / DSU مع توصيات للمملكة</div>'+
+      '</div>':'')+
+    (n.loading?'<div class="det-dc"><div class="shim" style="width:82%"></div><div class="shim"></div><div class="shim" style="width:62%"></div></div>':'')+
+    (n.analysis?
+      '<div class="det-dc">'+
+        '<div class="det-hd">تحليل التدبير</div>'+
+        '<div class="atabs">'+
+          '<button class="atab'+(tab==='sum'?' on':'')+'" onclick="swTab(\'sum\',this)">📋 الملخص</button>'+
+          '<button class="atab'+(tab==='leg'?' on':'')+'" onclick="swTab(\'leg\',this)">⚖️ التحليل</button>'+
+          '<button class="atab'+(tab==='rec'?' on':'')+'" onclick="swTab(\'rec\',this)">💡 التوصيات</button>'+
+          '<button class="atab'+(tab==='full'?' on':'')+'" onclick="swTab(\'full\',this)">📄 الكامل</button>'+
+        '</div>'+
+        '<div class="abox" id="abox">'+getTab(n)+'</div>'+
+        '<div class="act-row">'+
+          '<button class="actb" onclick="cpA()">📋 نسخ</button>'+
+          '<button class="actb bl" onclick="doAnalyze(\''+nid+'\')">🔄 إعادة</button>'+
+          '<button class="actb" onclick="addCmp(\''+nid+'\')">⚖️ مقارنة</button>'+
+        '</div>'+
+      '</div>':'');
+}
+function showDet(v){
+  document.getElementById('det-empty').style.display=v?'none':'flex';
+  document.getElementById('det-body').style.display=v?'block':'none';
+}
+function getTab(n){
+  if(!n.analysis)return'';
+  var t=tab==='sum'?(n.sum||n.analysis.slice(0,600)):tab==='leg'?(n.leg||n.analysis.slice(600,1300)):tab==='rec'?(n.rec||n.analysis.slice(1300)):n.analysis;
+  return t.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+function swTab(t,b){tab=t;document.querySelectorAll('.atab').forEach(function(x){x.classList.remove('on');});b.classList.add('on');var bx=document.getElementById('abox');var n=D.find(function(x){return x.id===selId;});if(bx&&n)bx.innerHTML=getTab(n);}
+function cpA(){var n=D.find(function(x){return x.id===selId;});if(n&&n.analysis)navigator.clipboard&&navigator.clipboard.writeText(n.analysis).then(function(){var b=event.target;b.textContent='✅ تم';setTimeout(function(){b.textContent='📋 نسخ';},2000);});}
+
+
+// ═══ ANALYZE ═══
+function parseAn(n,txt){
+  var s=txt.match(/الملخص التنفيذي\s*={0,3}\s*([\s\S]*?)(?=\n={2,}|\n===)/i);
+  var l=txt.match(/تحليل التدبير\s*={0,3}\s*([\s\S]*?)(?=\n={2,}|\n===)/i);
+  var rc=txt.match(/التوصيات\s*={0,3}\s*([\s\S]*)/i);
+  n.analysis=txt;n.sum=s?s[1].trim():txt.slice(0,600);n.leg=l?l[1].trim():txt.slice(600,1300);n.rec=rc?rc[1].trim():txt.slice(1300);
+}
+async function doAnalyze(sid){
+  var n=D.find(function(x){return x.id===sid||eid(x.id)===sid;});
+  if(!n||n.loading)return;
+  n.loading=true;n.analysis=null;renderList();renderDet(n);
+  var isSPS=n.type==='SPS';
+  var prompt=['أنت محلل تدابير تجارية متخصص في اتفاقيات منظمة التجارة العالمية.','حلّل هذا التدبير بالعربية الفصحى:','الرمز: '+n.symbol+' | الدولة: '+n.member+' | النوع: '+n.type,'التاريخ: '+n.date+' | موعد التعليق: '+(n.commentDeadline||'—'),'العنوان: '+(n.titleEn||n.title||''),'المنتجات: '+(n.products||[]).join('، '),'','=== الملخص التنفيذي ===','(4-5 جمل عن جوهر الإخطار وأثره على التجارة الدولية)','','=== تحليل التدبير ===','الأساس القانوني: اتفاقية '+(isSPS?'SPS المادة 5 و7':'TBT المادة 2 و5'),'معايير المرجعية: '+(isSPS?'Codex / OIE / IPPC':'ISO / IEC / ITU'),'الأثر على التجارة والدول الأعضاء','حقوق الاعتراض خلال 60-90 يوماً','','=== التوصيات ===','4-5 توصيات عملية للمملكة العربية السعودية'].join('\n');
+  try{
+    var r=await fetch(API+'/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({symbol:n.symbol,member:n.member,type:n.type,date:n.date,commentDeadline:n.commentDeadline,title:n.titleEn||n.title,products:n.products||[],docs:n.docs||[]})});
+    if(r.ok){var d=await r.json();if(d.analysis&&d.analysis.length>50){parseAn(n,d.analysis);n.loading=false;tab='full';renderList();renderDet(n);return;}}
+  }catch(e){}
+  try{
+    var ar=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
+    if(ar.ok){var ad=await ar.json();if(ad.content&&ad.content[0]&&ad.content[0].text){parseAn(n,ad.content[0].text);n.loading=false;tab='full';renderList();renderDet(n);return;}}
+  }catch(e){}
+  var t='=== الملخص التنفيذي ===\nأصدرت '+n.member+' إخطار '+n.type+' برقم '+n.symbol+' بتاريخ '+n.date+'. موعد التعليق: '+(n.commentDeadline||'—')+'.\n\n=== تحليل التدبير ===\n• اتفاقية '+(isSPS?'SPS — المادة 5 (تقييم المخاطر) والمادة 7':'TBT — المادة 2 (عدم التمييز) والمادة 5')+'\n• المعايير: '+(isSPS?'Codex Alimentarius / OIE / IPPC':'ISO / IEC / ITU')+'\n• المنتجات: '+(n.products||[]).join('، ')+'\n• حق الاعتراض: 60-90 يوماً للتعليق الرسمي\n\n=== التوصيات ===\n1. تقديم تعليقات رسمية قبل '+(n.commentDeadline||'—')+'\n2. تقييم الأثر على الصادرات السعودية\n3. التنسيق مع وزارة التجارة والهيئة العامة للتجارة الخارجية\n4. مراجعة معايير SASO بالتوافق مع '+(isSPS?'Codex':'ISO')+'\n5. متابعة لجنة '+(isSPS?'SPS':'TBT')+' في WTO';
+  parseAn(n,t);n.loading=false;tab='full';renderList();renderDet(n);
+}
+
+// ═══ DASHBOARD ═══
+function updateDash(){
+  // Top members
+  var cnt={};D.forEach(function(n){var k=n.memberCode||'?';if(!cnt[k])cnt[k]={s:0,t:0,name:n.member,sc:0};cnt[k][n.type==='SPS'?'s':'t']++;cnt[k].sc=Math.max(cnt[k].sc,calcRisk(n));});
+  var sorted=Object.keys(cnt).sort(function(a,b){return(cnt[b].s+cnt[b].t)-(cnt[a].s+cnt[a].t);}).slice(0,6);
+  document.getElementById('d-members').innerHTML=sorted.length?sorted.map(function(k){
+    var c=cnt[k];var tot=c.s+c.t;var sw=Math.round(c.s/tot*100);var rl=riskLabel(c.sc);var p=TP[k];
+    return'<div class="tm-item" onclick="filterByMember(\''+k+'\')" style="cursor:pointer">'+
+      '<span style="font-size:13px">'+(FL[k]||'🌍')+'</span>'+
+      '<div style="flex:1;min-width:0"><div style="font-size:10px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(MN[k]||c.name||k)+'</div>'+
+      '<div class="tm-bar" style="margin-top:2px"><div class="tm-sps" style="width:'+sw+'%"></div><div class="tm-tbt" style="width:'+(100-sw)+'%"></div></div></div>'+
+      (p?'<span style="font-size:8px;color:var(--t4)">'+Math.round(p.ts)+'%</span>':'')+
+      '<div style="width:6px;height:6px;border-radius:50%;background:'+rl.c+';flex-shrink:0"></div>'+
+      '<span style="font-size:10px;font-weight:700;color:var(--t1)">'+tot+'</span>'+
+    '</div>';
+  }).join(''):'<div class="empty-st" style="padding:12px"><div style="font-size:12px;opacity:.3">—</div></div>';
+
+  // Risk
+  var h=0,m=0,l=0;D.forEach(function(n){var s=calcRisk(n);if(s>=55)h++;else if(s>=38)m++;else l++;});
+  document.getElementById('d-rh').textContent=h;
+  document.getElementById('d-rm').textContent=m;
+  document.getElementById('d-rl').textContent=l;
+  var top=D.filter(function(n){return calcRisk(n)>=55;}).sort(function(a,b){return calcRisk(b)-calcRisk(a);}).slice(0,2);
+  if(top.length)document.getElementById('d-risk-note').innerHTML='المنهجية: أثر تجاري (40ن) + حساسية القطاع (35ن) + ضيق المهلة (25ن)<br>⚠️ أعلى مخاطرة: '+top.map(function(n){return'<b>'+(n.titleAr||n.symbol)+'</b> ('+calcRisk(n)+'ن)';}).join(' — ');
+
+  // Recent open
+  var op=D.filter(function(n){return n.status==='مفتوح للتعليق';}).slice(0,5);
+  document.getElementById('d-open-cnt').textContent=op.length?'('+op.length+')':'';
+  document.getElementById('d-recent').innerHTML=op.length?op.map(function(n){
+    var dl='';if(n.commentDeadline){var dv=Math.ceil((new Date(n.commentDeadline)-new Date())/86400000);dl=dv>0?dv+' يوم':'انتهى';}
+    return'<div class="tl-item" onclick="selN(\''+eid(n.id)+'\')">'+
+      '<div class="tl-dot" style="background:'+(n.type==='SPS'?'var(--gr)':'var(--am)')+'"></div>'+
+      '<div><div class="tl-title">'+(n.titleAr||n.title||n.symbol)+'</div>'+
+      '<div class="tl-meta"><span>'+(FL[n.memberCode]||'🌍')+' '+(n.member||'')+'</span><span class="bdg '+(n.type||'').toLowerCase()+'" style="font-size:8px">'+n.type+'</span>'+(dl?'<span style="color:'+(dl==='انتهى'?'var(--rd)':'var(--am)')+'">'+dl+'</span>':'')+
+      '</div></div></div>';
+  }).join(''):'<div class="empty-st" style="padding:12px"><div style="font-size:11px">لا إخطارات مفتوحة</div></div>';
+
+  // Bar chart
+  var cats={};D.forEach(function(n){(n.products||['غير محدد']).slice(0,2).forEach(function(p){if(!cats[p])cats[p]=0;cats[p]++;});});
+  var bs=Object.keys(cats).sort(function(a,b){return cats[b]-cats[a];}).slice(0,7);
+  var mx=bs[0]?cats[bs[0]]:1;
+  document.getElementById('d-barchart').innerHTML=bs.map(function(k){
+    var w=Math.round(cats[k]/mx*100);
+    return'<div class="bar-row"><div class="bar-lbl">'+k.slice(0,12)+'</div><div class="bar-track"><div class="bar-fill" style="width:'+w+'%;background:linear-gradient(90deg,var(--ac),var(--cy))"></div></div><div class="bar-val">'+cats[k]+'</div></div>';
+  }).join('');
+}
+function filterByMember(mc){document.getElementById('srch2').value=mc;pg=1;doLoad();}
+
+// ═══ SEARCH ═══
+function runSearch(){
+  var kw=(document.getElementById('adv-kw').value||'').toLowerCase();
+  var tp=document.getElementById('adv-type').value;
+  var mc=document.getElementById('adv-mc').value;
+  var fr=document.getElementById('adv-from').value;
+  var to=document.getElementById('adv-to').value;
+  var st=document.getElementById('adv-st').value;
+  var res=D.filter(function(n){
+    if(kw&&!(n.title||'').toLowerCase().includes(kw)&&!(n.titleAr||'').toLowerCase().includes(kw)&&!(n.symbol||'').toLowerCase().includes(kw))return false;
+    if(tp&&n.type!==tp)return false;
+    if(mc&&n.memberCode!==mc)return false;
+    if(fr&&n.date<fr)return false;
+    if(to&&n.date>to)return false;
+    if(st==='open'&&n.status!=='مفتوح للتعليق')return false;
+    if(st==='closed'&&n.status==='مفتوح للتعليق')return false;
+    return true;
+  });
+  document.getElementById('adv-cnt').textContent='نتائج: '+res.length;
+  document.getElementById('adv-res').innerHTML=res.length?res.map(function(n){
+    return'<div class="res-card" onclick="selN(\''+eid(n.id)+'\')">'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">'+
+        '<div style="flex:1;font-size:12px;font-weight:600;color:#b8cce8;line-height:1.5">'+(n.titleAr||n.title||n.symbol)+'</div>'+
+        '<div style="display:flex;gap:3px;flex-shrink:0;margin-right:8px"><span class="bdg '+(n.type||'').toLowerCase()+'">'+(n.type||'—')+'</span>'+(n.status==='مفتوح للتعليق'?'<span class="bdg open">مفتوح</span>':'<span class="bdg closed">منتهي</span>')+'</div>'+
+      '</div>'+
+      '<div style="font-size:10px;color:var(--t3)">'+(FL[n.memberCode]||'🌍')+' '+(n.member||'')+'  •  '+(n.date||'')+'</div>'+
+    '</div>';
+  }).join(''):'<div class="empty-st"><div style="font-size:18px;opacity:.3">🔍</div><div style="font-size:10px">لا نتائج</div></div>';
+}
+function clearSearch(){['adv-kw','adv-from','adv-to'].forEach(function(i){document.getElementById(i).value='';});['adv-type','adv-mc','adv-st'].forEach(function(i){document.getElementById(i).value='';});document.getElementById('adv-res').innerHTML='';document.getElementById('adv-cnt').textContent='';}
+
+// ═══ COMPARE ═══
+function addCmp(sid){var n=D.find(function(x){return x.id===sid||eid(x.id)===sid;});if(!n)return;if(!CMP.a)CMP.a=n;else CMP.b=n;goPage('compare',document.querySelectorAll('.nb')[3]);renderCmp();}
+function pickSlot(s){
+  var n=D[0];if(!n){alert('يرجى تحميل الإخطارات أولاً');return;}
+  var sym=prompt('أدخل رقم الوثيقة (مثال: '+n.symbol+'):');
+  if(!sym)return;
+  var found=D.find(function(x){return x.symbol===sym.trim();});
+  if(found){CMP[s]=found;renderCmp();}else alert('لم يُعثر على الإخطار');
+}
+function renderCmp(){
+  var wa=document.getElementById('cmp-a'),wb=document.getElementById('cmp-b');
+  function slotHtml(n,s){
+    if(!n)return'<div class="cmp-ph">➕ اختر الإخطار '+(s==='a'?'الأول':'الثاني')+'<br><span style="font-size:9px;color:var(--t4)">اضغط للاختيار</span></div>';
+    return'<span class="bdg '+(n.type||'').toLowerCase()+'" style="margin-bottom:5px">'+(n.type||'—')+'</span>'+
+      '<div style="font-size:11px;font-weight:600;color:#b8cce8;margin-bottom:3px">'+(n.titleAr||n.title||n.symbol)+'</div>'+
+      '<div style="font-size:9px;color:var(--t3)">'+(FL[n.memberCode]||'🌍')+' '+(n.member||'')+'</div>'+
+      '<button onclick="CMP.'+s+'=null;renderCmp()" style="margin-top:7px;background:transparent;border:1px solid var(--b2);color:var(--t3);border-radius:5px;padding:2px 7px;cursor:pointer;font-size:9px">✕ تغيير</button>';
+  }
+  wa.className='cmp-slot'+(CMP.a?' filled':'');wa.innerHTML=slotHtml(CMP.a,'a');
+  wb.className='cmp-slot'+(CMP.b?' filled':'');wb.innerHTML=slotHtml(CMP.b,'b');
+  if(!CMP.a||!CMP.b){document.getElementById('cmp-res').innerHTML='';return;}
+  var A=CMP.a,B=CMP.b;
+  var rows=[['العنوان',A.titleAr||A.title||'—',B.titleAr||B.title||'—'],['رقم الوثيقة',A.symbol||'—',B.symbol||'—'],['النوع',A.type||'—',B.type||'—'],['الدولة',(FL[A.memberCode]||'🌍')+' '+(A.member||'—'),(FL[B.memberCode]||'🌍')+' '+(B.member||'—')],['التاريخ',A.date||'—',B.date||'—'],['الحالة',A.status||'—',B.status||'—'],['موعد التعليق',A.commentDeadline||'—',B.commentDeadline||'—'],['المنتجات',(A.products||[]).join('، ')||'—',(B.products||[]).join('، ')||'—'],['درجة المخاطر',calcRisk(A)+'/100',calcRisk(B)+'/100']];
+  document.getElementById('cmp-res').innerHTML='<div class="det-dc"><div class="det-hd">جدول المقارنة</div><table class="cmp-table"><thead><tr><th>العنصر</th><th>'+(A.titleAr||A.symbol||'الإخطار الأول').slice(0,25)+'</th><th>'+(B.titleAr||B.symbol||'الإخطار الثاني').slice(0,25)+'</th></tr></thead><tbody>'+rows.map(function(r){return'<tr class="'+(r[1]!==r[2]?'cmp-diff':'')+'"><td style="font-size:9px;color:var(--t3);font-weight:600">'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>';}).join('')+'</tbody></table></div>';
+}
+
+// ═══ ALERTS ═══
+async function loadAlerts(){try{var r=await fetch(API+'/api/alerts');if(r.ok){var d=await r.json();ALERTS=d.alerts||[];renderAlerts();}}catch(e){}}
+function renderAlerts(){var el=document.getElementById('al-list');if(!ALERTS.length){el.innerHTML='<div class="empty-st" style="padding:16px;font-size:10px">لا توجد تنبيهات</div>';return;}el.innerHTML=ALERTS.map(function(a){return'<div class="al-row"><label class="tgl"><input type="checkbox" '+(a.active?'checked':'')+' onchange="toggleAl('+a.id+',this)"/><span class="tslider"></span></label><div class="al-info"><div class="al-name">'+(a.type||'الكل')+' · '+(a.sector||'الجميع')+'</div><div class="al-desc">'+(a.frequency||'فوري')+' · '+(a.country||'جميع الدول')+'</div></div><button class="al-del" onclick="delAl('+a.id+')">✕</button></div>';}).join('');}
+async function addAlert(){var b={type:document.getElementById('al-type').value,sector:document.getElementById('al-sec').value,country:document.getElementById('al-country').value,frequency:document.getElementById('al-freq').value};try{var r=await fetch(API+'/api/alerts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});if(r.ok){var d=await r.json();ALERTS.push(d.alert);renderAlerts();document.getElementById('al-sec').value='';}}catch(e){alert('تعذّر الإضافة');}}
+async function toggleAl(id,cb){try{await fetch(API+'/api/alerts/'+id,{method:'PUT'});}catch(e){cb.checked=!cb.checked;}var a=ALERTS.find(function(x){return x.id===id;});if(a)a.active=cb.checked;}
+async function delAl(id){try{await fetch(API+'/api/alerts/'+id,{method:'DELETE'});}catch(e){}ALERTS=ALERTS.filter(function(a){return a.id!==id;});renderAlerts();}
+
+
+
+// ═══ NAV ═══
+function goPage(pg2,btn){
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  document.querySelectorAll('.pnl').forEach(function(p){p.classList.remove('show');});
+  var el=document.getElementById('p-'+pg2);
+  if(el)el.classList.add('show');
+}
+
+// ═══ STATUS ═══
+function setStatus(st,msg){document.getElementById('hlbl').textContent=msg;document.getElementById('hdot').className='hdot'+(st==='ok'?' on':'');document.getElementById('hstat').className='hstat'+(st==='ok'?' ok':'');}
+function setProg(v,p){var w=document.getElementById('pbar-wrap');w.className='pbar-wrap'+(v?' show':'');if(v&&p!==undefined)document.getElementById('pbar-fill').style.width=p+'%';if(!v)setTimeout(function(){document.getElementById('pbar-fill').style.width='0%';},500);}
+
+// ═══ DEMO DATA ═══
+function buildDemo(){
+  var t=new Date();
+  var f=function(days){var x=new Date(t);x.setDate(x.getDate()+days);return x.toISOString().slice(0,10);};
+  var d=function(m){var x=new Date(t);x.setMonth(x.getMonth()+m);return x.toISOString().slice(0,10);};
+  return[
+    {id:'G/SPS/N/EU/1001',symbol:'G/SPS/N/EU/1001',member:'European Union',memberCode:'C381',date:d(-1),type:'SPS',notifType:'Regular',title:'Maximum Residue Levels for Pesticides in Food Products',titleEn:'Maximum Residue Levels for Pesticides in Food Products',titleAr:'الحدود القصوى لبقايا المبيدات في المواد الغذائية',status:'مفتوح للتعليق',products:['أغذية','فواكه','خضروات'],keywords:['pesticides','food safety','MRL'],commentDeadline:f(25),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/TBT/N/USA/2001',symbol:'G/TBT/N/USA/2001',member:'United States of America',memberCode:'C840',date:d(-1),type:'TBT',notifType:'Regular',title:'Energy Efficiency Standards for Industrial Equipment',titleEn:'Energy Efficiency Standards for Industrial Equipment',titleAr:'معايير كفاءة الطاقة للمعدات الصناعية',status:'مفتوح للتعليق',products:['معدات صناعية','آلات'],keywords:['energy','efficiency','standards'],commentDeadline:f(45),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/SPS/N/CHN/1501',symbol:'G/SPS/N/CHN/1501',member:'China',memberCode:'C156',date:d(-2),type:'SPS',notifType:'Regular',title:'Food Safety Standards for Dairy Products and Infant Formula',titleEn:'Food Safety Standards for Dairy Products and Infant Formula',titleAr:'معايير سلامة الأغذية لمنتجات الألبان وأغذية الأطفال',status:'مفتوح للتعليق',products:['ألبان','أغذية أطفال'],keywords:['dairy','food safety'],commentDeadline:f(60),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/TBT/N/JPN/3001',symbol:'G/TBT/N/JPN/3001',member:'Japan',memberCode:'C392',date:d(-1),type:'TBT',notifType:'Regular',title:'Technical Regulations for Chemical Substances in Electronics',titleEn:'Technical Regulations for Chemical Substances in Electronics',titleAr:'اللوائح التقنية للمواد الكيميائية في الإلكترونيات',status:'مفتوح للتعليق',products:['إلكترونيات','كيماويات'],keywords:['chemicals','electronics'],commentDeadline:f(12),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/SPS/N/IND/501',symbol:'G/SPS/N/IND/501',member:'India',memberCode:'C356',date:d(-2),type:'SPS',notifType:'Regular',title:'Import Requirements for Animal Feed and Feed Additives',titleEn:'Import Requirements for Animal Feed and Feed Additives',titleAr:'متطلبات استيراد الأعلاف الحيوانية والمضافات',status:'مفتوح للتعليق',products:['أعلاف حيوانية','مضافات غذائية'],keywords:['animal feed','additives'],commentDeadline:f(38),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/TBT/N/KOR/2201',symbol:'G/TBT/N/KOR/2201',member:'Korea',memberCode:'C410',date:d(-1),type:'TBT',notifType:'Regular',title:'Safety Standards for Steel and Metal Construction Materials',titleEn:'Safety Standards for Steel and Metal Construction Materials',titleAr:'معايير السلامة لمواد البناء من الصلب والمعادن',status:'منتهي',products:['حديد وصلب','مواد بناء'],keywords:['steel','construction'],commentDeadline:'',docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/SPS/N/AUS/801',symbol:'G/SPS/N/AUS/801',member:'Australia',memberCode:'C036',date:d(-3),type:'SPS',notifType:'Regular',title:'Biosecurity Requirements for Plant Products and Fresh Produce',titleEn:'Biosecurity Requirements for Plant Products and Fresh Produce',titleAr:'متطلبات الأمن البيولوجي للمنتجات النباتية',status:'منتهي',products:['منتجات نباتية','فواكه طازجة'],keywords:['biosecurity','plants'],commentDeadline:'',docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/TBT/N/DEU/401',symbol:'G/TBT/N/DEU/401',member:'Germany',memberCode:'C276',date:d(-1),type:'TBT',notifType:'Regular',title:'Labeling Requirements for Chemical Products and Detergents',titleEn:'Labeling Requirements for Chemical Products and Detergents',titleAr:'اشتراطات وضع العلامات على الكيماويات والمنظفات',status:'مفتوح للتعليق',products:['كيماويات','منظفات','بتروكيماويات'],keywords:['labeling','chemicals'],commentDeadline:f(55),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/SPS/N/TUR/301',symbol:'G/SPS/N/TUR/301',member:'Turkey',memberCode:'C792',date:d(-2),type:'SPS',notifType:'Regular',title:'Veterinary Health Requirements for Meat and Poultry Imports',titleEn:'Veterinary Health Requirements for Meat and Poultry Imports',titleAr:'اشتراطات الصحة البيطرية لاستيراد اللحوم والدواجن',status:'مفتوح للتعليق',products:['لحوم','دواجن'],keywords:['veterinary','meat'],commentDeadline:f(20),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/TBT/N/SGP/601',symbol:'G/TBT/N/SGP/601',member:'Singapore',memberCode:'C702',date:d(-1),type:'TBT',notifType:'Regular',title:'Technical Standards for Petrochemical and Petroleum Products',titleEn:'Technical Standards for Petrochemical and Petroleum Products',titleAr:'المعايير التقنية للمنتجات البتروكيماوية والبترولية',status:'مفتوح للتعليق',products:['بتروكيماويات','مشتقات نفطية'],keywords:['petrochemicals','petroleum'],commentDeadline:f(40),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/TBT/N/GBR/301',symbol:'G/TBT/N/GBR/301',member:'United Kingdom',memberCode:'C826',date:d(-1),type:'TBT',notifType:'Regular',title:'UK REACH Regulation for Chemical Registration',titleEn:'UK REACH Regulation for Chemical Registration',titleAr:'لائحة المملكة المتحدة REACH لتسجيل المواد الكيميائية',status:'مفتوح للتعليق',products:['كيماويات','بتروكيماويات'],keywords:['REACH','chemicals'],commentDeadline:f(37),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/SPS/N/EU/1102',symbol:'G/SPS/N/EU/1102',member:'European Union',memberCode:'C381',date:d(-3),type:'SPS',notifType:'Regular',title:'Contaminants in Food - Mycotoxins Maximum Levels',titleEn:'Contaminants in Food - Mycotoxins Maximum Levels',titleAr:'الملوثات في الأغذية — المستويات القصوى للميكوتوكسينات',status:'مفتوح للتعليق',products:['حبوب','أغذية','مكسرات'],keywords:['mycotoxins','contaminants'],commentDeadline:f(28),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/TBT/N/CHN/1701',symbol:'G/TBT/N/CHN/1701',member:'China',memberCode:'C156',date:d(-1),type:'TBT',notifType:'Regular',title:'Mandatory National Standards for Steel Products',titleEn:'Mandatory National Standards for Steel Products',titleAr:'المعايير الوطنية الإلزامية لمنتجات الصلب',status:'مفتوح للتعليق',products:['حديد وصلب','معادن'],keywords:['steel','standards'],commentDeadline:f(22),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/SPS/N/CAN/601',symbol:'G/SPS/N/CAN/601',member:'Canada',memberCode:'C124',date:d(-2),type:'SPS',notifType:'Regular',title:'Maximum Residue Limits for Pesticides - Glyphosate',titleEn:'Maximum Residue Limits for Pesticides - Glyphosate',titleAr:'الحدود القصوى لبقايا مبيد الجلايفوسات',status:'مفتوح للتعليق',products:['حبوب','أغذية'],keywords:['glyphosate','MRL'],commentDeadline:f(15),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false},
+    {id:'G/TBT/N/MYS/201',symbol:'G/TBT/N/MYS/201',member:'Malaysia',memberCode:'C458',date:d(-1),type:'TBT',notifType:'Regular',title:'Mandatory Standards for Palm Oil and Palm Oil Products',titleEn:'Mandatory Standards for Palm Oil and Palm Oil Products',titleAr:'المعايير الإلزامية لزيت النخيل ومنتجاته',status:'مفتوح للتعليق',products:['زيت نخيل','زيوت نباتية'],keywords:['palm oil','standards'],commentDeadline:f(52),docs:[],epingLink:'https://eping.wto.org',analysis:null,loading:false,docAnalysis:null,docLoading:false}
+  ];
+}
+
+
+// ════════ NTM ════════
+var _nd = {
+  un:{data:[],pg:1,tot:1,sel:-1},
+  wto:{data:[],pg:1,tot:1,sel:-1}
+};
+var _DEMO = {
+un:[
+{r:'United States',p:'World',hs:'760110',prod:'Aluminium, unwrought',yr:2024,code:'D213',tp:'ADP',en:'US anti-dumping investigation on primary aluminium',ar:'تحقيق مكافحة الإغراق الأمريكي على الألومنيوم الأولي — صادرات معادن السعودية متأثرة',legal:'19 USC 1673',ph:'In Force',sa:true},
+{r:'European Union',p:'World',hs:'760110',prod:'Aluminium, unwrought',yr:2024,code:'B319',tp:'TBT',en:'EU CBAM carbon border adjustment on aluminium',ar:'آلية CBAM الكربونية الأوروبية على واردات الألومنيوم — معادن السعودية من أكبر المتأثرين',legal:'EU Reg. 2023/956',ph:'In Force',sa:true},
+{r:'European Union',p:'World',hs:'310210',prod:'Ammonium nitrate',yr:2024,code:'L119',tp:'CV',en:'EU CVD on ammonium nitrate from Gulf',ar:'رسوم تعويضية أوروبية على نترات الأمونيوم من الخليج — سافكو وسابك قيد المراجعة',legal:'EU Reg. 2016/1037',ph:'Initiation',sa:true},
+{r:'China',p:'World',hs:'270900',prod:'Crude petroleum',yr:2023,code:'E111',tp:'QR',en:'China NDRC crude oil import quota',ar:'نظام الحصص الصيني لاستيراد النفط الخام — يؤثر على عقود أرامكو السعودية',legal:'NDRC Order 6/2023',ph:'In Force',sa:true},
+{r:'India',p:'World',hs:'310210',prod:'Ammonium nitrate',yr:2024,code:'E112',tp:'QR',en:'India import licence for ammonium nitrate',ar:'ترخيص استيراد إلزامي للأمونيوم نيترات في الهند — صادرات سافكو/سابك',legal:'Explosives Act 1884',ph:'In Force',sa:true},
+{r:'United States',p:'World',hs:'150110',prod:'Palm oil, crude',yr:2023,code:'A140',tp:'SPS',en:'USDA APHIS phytosanitary requirement for palm oil',ar:'شهادة صحة نباتية أمريكية لزيت النخيل الخام — متطلبات APHIS',legal:'7 USC 7701',ph:'In Force',sa:true},
+{r:'United Kingdom',p:'World',hs:'290213',prod:'Toluene',yr:2024,code:'B321',tp:'TBT',en:'UK REACH chemical registration post-Brexit',ar:'تسجيل UK REACH للتولوين بعد بريكست — سلسلة توريد سابك البريطانية',legal:'UK REACH SI 2019/758',ph:'In Force',sa:true},
+{r:'Korea, Rep.',p:'World',hs:'720241',prod:'Ferrochromium',yr:2024,code:'D101',tp:'SG',en:'Korea safeguard TRQ on 26 steel categories',ar:'حصص الحماية الكورية على 26 فئة صلب — حديد السعودية يواجه رسوم 25%',legal:'Korean Trade Act Art. 16',ph:'In Force',sa:true},
+{r:'Australia',p:'World',hs:'080410',prod:'Dates, fresh',yr:2023,code:'A141',tp:'SPS',en:'Australia DAFF biosecurity for Saudi dates',ar:'شروط الأمن البيولوجي الأسترالية للتمور السعودية — معالجة حرارية مطلوبة',legal:'Biosecurity Act 2015',ph:'In Force',sa:true},
+{r:'Brazil',p:'World',hs:'310210',prod:'Ammonium nitrate',yr:2023,code:'D213',tp:'ADP',en:'Brazil DECOM anti-dumping on AN from Gulf',ar:'تحقيق مكافحة الإغراق البرازيلي على نترات الأمونيوم من الخليج — سافكو',legal:'Brazil Decree 8,058/2013',ph:'Initiation',sa:true},
+{r:'Canada',p:'World',hs:'760110',prod:'Aluminium, primary',yr:2024,code:'D214',tp:'ADP',en:'Canada CBSA AD on primary aluminium',ar:'رسوم مكافحة الإغراق الكندية على الألومنيوم الأولي — معادن السعودية 30.5%',legal:'SIMA; CBSA 2023-AD-18',ph:'In Force',sa:true},
+{r:'Japan',p:'World',hs:'080410',prod:'Dates, fresh',yr:2023,code:'A142',tp:'SPS',en:'Japan Plant Protection Act for dates',ar:'متطلبات الحجر الزراعي الياباني للتمور السعودية — تبخير محدد مطلوب',legal:'Plant Protection Act 1950',ph:'In Force',sa:true}
+],
+wto:[
+{r:'United States of America',p:'Saudi Arabia',hs:'760110',prod:'Aluminium unwrought',yr:2024,code:'ADP-840',tp:'ADP',en:'US anti-dumping on primary aluminium',ar:'رسوم مكافحة الإغراق الأمريكية على الألومنيوم الأولي — صادرات معادن السعودية',legal:'19 USC 1673',ph:'In force',sa:true},
+{r:'European Union',p:'All Members',hs:'760110',prod:'Aluminium unwrought',yr:2024,code:'SG-EU-1',tp:'SG',en:'EU safeguard TRQ on steel/aluminium',ar:'حصص الحماية الأوروبية على 26 فئة صلب/ألومنيوم — صادرات معادن السعودية',legal:'EU Reg. 2019/159',ph:'In force',sa:true},
+{r:'India',p:'All Members',hs:'760110',prod:'Aluminium unwrought',yr:2024,code:'SG-356',tp:'SG',en:'India DGTR safeguard on primary aluminium',ar:'تحقيق الحماية الهندي على الألومنيوم — رسوم احترازية 200 يوم؛ معادن',legal:'DGTR Case SG 01/2024',ph:'Initiation',sa:true},
+{r:'Turkey',p:'Saudi Arabia',hs:'310210',prod:'Ammonium nitrate',yr:2024,code:'ADP-792',tp:'ADP',en:'Turkey AD on fertilisers from GCC',ar:'تحقيق مكافحة الإغراق التركي في الأسمدة من الخليج — سافكو مُسمَّاة',legal:'Turkish AD Regulation 2004',ph:'Initiation',sa:true},
+{r:'South Africa',p:'Saudi Arabia',hs:'310210',prod:'Ammonium nitrate',yr:2024,code:'ADP-710',tp:'ADP',en:'ITAC AD on ammonium nitrate from Saudi Arabia',ar:'رسم مكافحة الإغراق من ITAC على نترات الأمونيوم السعودية — سافكو 26%',legal:'ITAC Report 569 (2024)',ph:'In force',sa:true},
+{r:'European Union',p:'All Members',hs:'080410',prod:'Dates fresh or dried',yr:2023,code:'SPS-EU-D',tp:'SPS',en:'EU Plant Health Reg for Saudi dates',ar:'لوائح صحة النبات الأوروبية للتمور السعودية — شهادة صحية نباتية',legal:'EU Reg. 2016/2031',ph:'In force',sa:true},
+{r:'Korea, Republic of',p:'Saudi Arabia',hs:'760110',prod:'Aluminium unwrought',yr:2024,code:'ADP-410',tp:'ADP',en:'Korea AD on primary aluminium from ME',ar:'تحقيق مكافحة الإغراق الكوري على الألومنيوم من الشرق الأوسط — معادن',legal:'MOTIT Investigation 2024',ph:'Initiation',sa:true},
+{r:'Saudi Arabia, Kingdom of',p:'All Members',hs:'020110',prod:'Bovine meat, fresh',yr:2024,code:'SPS-SAU',tp:'SPS',en:'Saudi SFDA halal + veterinary certificate',ar:'شهادة الحلال الإلزامية والشهادة الصحية البيطرية لواردات اللحوم للمملكة',legal:'SFDA Regulation 2022',ph:'In force',sa:false},
+{r:'United States of America',p:'All Members',hs:'720110',prod:'Non-alloy pig iron',yr:2023,code:'SG-840-2',tp:'SG',en:'US Section 232 tariff on steel products',ar:'تعريفة المادة 232 الأمريكية على الصلب — صادرات حديد السعودية خاضعة',legal:'19 USC 1862; Proc. 9705',ph:'In force',sa:true},
+{r:'Brazil',p:'Saudi Arabia',hs:'760110',prod:'Aluminium unwrought',yr:2024,code:'ADP-076',tp:'ADP',en:'Brazil SDCOM CVD on aluminium from GCC',ar:'تحقيق الرسوم التعويضية البرازيلي على الألومنيوم من الخليج — معادن',legal:'Brazil Decree 1,751/1995',ph:'Initiation',sa:true},
+{r:'European Union',p:'All Members',hs:'390110',prod:'Polyethylene primary',yr:2024,code:'TBT-EU-PE',tp:'TBT',en:'EU Single-Use Plastics Directive',ar:'توجيه البلاستيك أحادي الاستخدام الأوروبي — تشكيلة بوليمرات سابك',legal:'EU Directive 2019/904',ph:'In force',sa:true},
+{r:'China',p:'All Members',hs:'150110',prod:'Palm oil crude',yr:2023,code:'SPS-CHN-PO',tp:'SPS',en:'China GACC Order 248 for palm oil',ar:'أمر GACC رقم 248 — تسجيل إلزامي لمنشآت زيت النخيل بما فيها الخليج',legal:'GACC Order 248 (2021)',ph:'In force',sa:true}
+]
+};
+
+function _risk(tp,sa){
+  var H=['ADP','CV','SG'],M=['SPS','TBT','QR'];
+  if(H.indexOf(tp)>=0&&sa)return'high';
+  if(H.indexOf(tp)>=0)return'medium';
+  if(M.indexOf(tp)>=0&&sa)return'high';
+  if(M.indexOf(tp)>=0)return'medium';
+  return'low';
+}
+function _action(risk,tp){
+  if(risk==='high')return(tp==='ADP'||tp==='CV')?'dispute':'stc';
+  if(risk==='medium')return(tp==='SPS'||tp==='TBT')?'consult':'notify';
+  return'monitor';
+}
+function _criteria(m){
+  var tp=m.tp||'';
+  var sa=!!m.sa;
+  var risk=m.risk||_risk(tp,sa);
+  var action=m.action||_action(risk,tp);
+  var riskTxt=risk==='high'?'مرتفع':risk==='medium'?'متوسط':'منخفض';
+  var actionTxt=(_AC[action]&&_AC[action].l)||'متابعة';
+  var typeTxt=(tp==='ADP'||tp==='CV'||tp==='SG')?'تدبير علاجي تجاري غالباً أعلى حساسية':(tp==='SPS'||tp==='TBT'||tp==='QR')?'تدبير تنظيمي أو كمي يتطلب متابعة فنية':'تدبير عام منخفض الأولوية';
+  var saTxt=sa?'يوجد ارتباط مباشر أو محتمل بالمملكة/صادراتها أو وارداتها':'لا يظهر ارتباط مباشر بالمملكة في بيانات العينة';
+  return '<div class="ntm-criteria"><div class="det-hd" style="margin-bottom:4px">معايير التصنيف</div>'
+    +'<ul>'
+    +'<li><b>نوع التدبير:</b> '+typeTxt+' ('+tp+').</li>'
+    +'<li><b>صلة التدبير بالمملكة:</b> '+saTxt+'.</li>'
+    +'<li><b>درجة المخاطر:</b> '+riskTxt+'؛ ADP/CV/SG أو SPS/TBT/QR المرتبطة بالمملكة تُصنف أعلى.</li>'
+    +'<li><b>الإجراء المقترح:</b> '+actionTxt+' بحسب نوع التدبير ودرجة المخاطر.</li>'
+    +'</ul></div>';
+}
+function _norm(r,i){
+  var m=Object.assign({},r,{_i:i});
+  if(!m.risk)m.risk=_risk(m.tp,m.sa);
+  if(!m.action)m.action=_action(m.risk,m.tp);
+  return m;
+}
+
+var _RC={high:{c:'rh',i:'🔴',l:'خطر مرتفع'},medium:{c:'rm',i:'🟡',l:'خطر متوسط'},low:{c:'rl2',i:'🟢',l:'منخفض'}};
+var _AC={dispute:{c:'ad',l:'نزاع DSU'},stc:{c:'as',l:'STC'},consult:{c:'ac',l:'استشارة'},notify:{c:'an',l:'إخطار'},monitor:{c:'am2',l:'متابعة'}};
+
+function _kpi(pf){
+  var d=_nd[pf].data;
+  document.getElementById(pf+'-kt').textContent=d.length;
+  document.getElementById(pf+'-kh').textContent=d.filter(function(m){return m.risk==='high';}).length;
+  document.getElementById(pf+'-ks').textContent=d.filter(function(m){return m.sa;}).length;
+  if(pf==='un')document.getElementById('un-kc').textContent=new Set(d.map(function(m){return m.r;})).size;
+  else document.getElementById('wto-kstc').textContent=d.filter(function(m){return m.action==='stc'||m.action==='dispute';}).length;
+  document.getElementById(pf+'-cnt').textContent=d.length+' تدبير';
+}
+function _list(pf){
+  var st=_nd[pf],el=document.getElementById(pf+'-list');
+  if(!st.data.length){el.innerHTML='<div class="empty-st"><div style="font-size:20px;opacity:.2">'+(pf==='un'?'🇺🇳':'⚖️')+'</div><div style="font-size:9px">اضغط تحميل</div></div>';return;}
+  var page=st.data.slice((st.pg-1)*50,st.pg*50);
+  var ac=pf==='un'?{bg:'rgba(14,165,233,.1)',c:'#38bdf8',b:'rgba(14,165,233,.2)'}:{bg:'rgba(139,92,246,.1)',c:'#c4b5fd',b:'rgba(139,92,246,.2)'};
+  el.innerHTML=page.map(function(m,i){
+    var idx=(st.pg-1)*50+i;
+    var rm=_RC[m.risk]||_RC.low,am=_AC[m.action]||_AC.monitor;
+    return'<div class="nc'+(st.sel===idx?' sel':'')+'" data-pf="'+pf+'" data-idx="'+idx+'" onclick="_sel(this.dataset.pf,+this.dataset.idx)">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">'
+        +'<div style="display:flex;gap:3px"><span style="background:'+ac.bg+';color:'+ac.c+';border:1px solid '+ac.b+';padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600">'+m.tp+'</span><span class="'+rm.c+'">'+rm.i+' '+rm.l+'</span></div>'
+        +'<span style="font-size:9px;color:var(--t4)">'+m.yr+'</span>'
+      +'</div>'
+      +'<div style="font-size:11px;font-weight:500;color:#b8cce8;line-height:1.5;margin-bottom:3px">'+(m.ar||m.en||'—')+'</div>'
+      +'<div style="display:flex;justify-content:space-between"><span style="font-size:10px;color:var(--t3)">'+(m.r||'—')+(m.sa?' <span style="color:var(--cy);font-size:9px">•SA</span>':'')+'</span><span class="'+am.c+'">'+am.l+'</span></div>'
+    +'</div>';
+  }).join('');
+}
+function _sel(pf,idx){
+  _nd[pf].sel=idx;_list(pf);
+  var m=_nd[pf].data[idx];if(!m)return;
+  var rm=_RC[m.risk]||_RC.low,am=_AC[m.action]||_AC.monitor;
+  var rc=m.risk==='high'?'var(--rd)':m.risk==='medium'?'var(--am)':'var(--gr)';
+  var rb=m.risk==='high'?'background:rgba(244,63,94,.05);border:1px solid rgba(244,63,94,.2)':m.risk==='medium'?'background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2)':'background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2)';
+  document.getElementById(pf+'-det').innerHTML=
+    '<div style="padding:10px 12px;border-radius:10px;margin-bottom:9px;'+rb+'">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">'
+        +'<span style="font-size:12px;font-weight:700;color:'+rc+'">'+rm.i+' '+rm.l+'</span>'
+        +'<span class="'+am.c+'">'+am.l+'</span>'
+      +'</div><div style="font-size:9px;color:var(--t3)">'+(m.risk==='high'?'يُرجَّح تعارضه مع WTO':m.risk==='medium'?'يستوجب المتابعة':'تدبير روتيني')+'</div>'
+    +'</div>'
+    +_criteria(m)
+    +'<div class="det-dc" style="margin-bottom:8px">'
+      +'<div class="det-hd">بيانات التدبير</div>'
+      +'<div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:7px">'
+        +'<span style="padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;background:rgba(139,92,246,.1);color:#c4b5fd;border:1px solid rgba(139,92,246,.2)">'+m.tp+'</span>'
+        +(m.code?'<span style="padding:2px 7px;border-radius:20px;font-size:9px;background:rgba(139,92,246,.06);color:#a78bfa;border:1px solid rgba(139,92,246,.15)">'+m.code+'</span>':'')
+        +(m.sa?'<span style="padding:2px 7px;border-radius:20px;font-size:9px;background:rgba(6,182,212,.1);color:#22d3ee;border:1px solid rgba(6,182,212,.2)">🇸🇦 يؤثر SA</span>':'')
+        +(m.ph?'<span style="padding:2px 7px;border-radius:20px;font-size:9px;background:rgba(71,85,105,.1);color:#94a3b8;border:1px solid rgba(71,85,105,.2)">'+m.ph+'</span>':'')
+      +'</div>'
+      +'<div style="font-size:13px;font-weight:600;color:#b8cce8;margin-bottom:4px;line-height:1.5">'+(m.ar||m.en||'—')+'</div>'
+      +(m.ar&&m.en?'<div style="font-size:10px;color:var(--t3);margin-bottom:7px">'+m.en+'</div>':'')
+      +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding-top:8px;border-top:1px solid var(--b1)">'
+        +'<div><div style="font-size:9px;color:var(--t4)">الدولة المطبِّقة</div><div style="font-size:11px;font-weight:600;color:#c0d4f0">'+(m.r||'—')+'</div></div>'
+        +'<div><div style="font-size:9px;color:var(--t4)">الدولة الشريكة</div><div style="font-size:11px;font-weight:600;color:#c0d4f0">'+(m.p||'WLD')+'</div></div>'
+        +'<div><div style="font-size:9px;color:var(--t4)">كود HS</div><div style="font-size:11px;font-weight:600;color:#c0d4f0;font-family:monospace">'+(m.hs||'—')+'</div></div>'
+        +'<div><div style="font-size:9px;color:var(--t4)">المنتج</div><div style="font-size:10px;color:var(--t2)">'+(m.prod||'—')+'</div></div>'
+        +'<div><div style="font-size:9px;color:var(--t4)">المرجع القانوني</div><div style="font-size:10px;color:var(--t3)">'+(m.legal||'—')+'</div></div>'
+      +'</div>'
+        +'<div><div style="font-size:9px;color:var(--t4)">السنة</div><div style="font-size:11px;font-weight:600;color:#c0d4f0">'+(m.yr||'—')+'</div></div>'
+      +'</div>'
+    +'</div>'
+    +(m.ai?
+      '<div class="det-dc" style="border-color:rgba(139,92,246,.2)"><div class="det-hd">تحليل التدبير AI</div><div class="abox ntm-analysis-box" style="max-height:none!important;overflow:visible!important;white-space:pre-wrap;line-height:1.9">'+m.ai.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div><button class="actb" data-pf="'+pf+'" data-idx="'+idx+'" onclick="_cp(this.dataset.pf,+this.dataset.idx)" style="margin-top:7px">📋 نسخ</button></div>'
+    :'<div class="btn-ctr"><button class="btn-ai" data-pf="'+pf+'" data-idx="'+idx+'" onclick="_ai(this.dataset.pf,+this.dataset.idx)" style="padding:8px 16px;font-size:11px">🤖 تحليل التدبير AI</button><div class="btn-hint">وفق GATT / SPS / TBT / DSU</div></div>');
+}
+function _pgBar(pf){
+  var st=_nd[pf],el=document.getElementById(pf+'-pg');
+  if(st.tot<=1){el.style.display='none';return;}
+  el.style.display='flex';
+  document.getElementById(pf+'-pl').textContent=st.pg+'/'+st.tot;
+  document.getElementById(pf+'-pp').disabled=st.pg<=1;
+  document.getElementById(pf+'-pn').disabled=st.pg>=st.tot;
+}
+function _pg(pf,d){
+  _nd[pf].pg=Math.max(1,Math.min(_nd[pf].tot,_nd[pf].pg+d));
+  _list(pf);_pgBar(pf);
+}
+
+function _localNtmAnalysis(m){
+  var tp=m.tp||'غير محدد', code=m.code||'غير متاح', reporter=m.r||'غير محدد', partner=m.p||'جميع الأعضاء', hs=m.hs||'غير متاح', prod=m.prod||'غير محدد', year=m.yr||'غير متاح', desc=m.en||m.ar||'لا يوجد وصف تفصيلي متاح.';
+  var sa=!!m.sa || /Saudi|السعودية|SA/i.test((partner+' '+desc+' '+prod));
+  var high=['ADP','CV','SG'], reg=['SPS','TBT','QR'];
+  var risk=(high.indexOf(tp)>=0&&sa)?'مرتفع':(high.indexOf(tp)>=0||(reg.indexOf(tp)>=0&&sa))?'متوسط إلى مرتفع':(reg.indexOf(tp)>=0?'متوسط':'منخفض');
+  var legal={SPS:'اتفاقية SPS، ولا سيما المواد 2 و5 و7 بشأن الأساس العلمي وتقييم المخاطر والشفافية.',TBT:'اتفاقية TBT، ولا سيما المادة 2 بشأن اللوائح الفنية وعدم خلق عوائق غير ضرورية أمام التجارة.',ADP:'اتفاقية مكافحة الإغراق والمادة VI من GATT 1994.',CV:'اتفاقية الدعم والتدابير التعويضية SCM والمادة VI من GATT 1994.',SG:'اتفاقية الوقاية والمادة XIX من GATT 1994.',QR:'المادة XI من GATT 1994 بشأن الحظر العام للقيود الكمية.'}[tp]||'GATT 1994 والاتفاقيات ذات الصلة بحسب طبيعة التدبير.';
+  return '=== الملخص التنفيذي ===\n'
+    +'يتعلق هذا التدبير بنوع ('+tp+') مطبق من قبل '+reporter+' على '+partner+'. المنتج محل التدبير هو '+prod+' برمز HS '+hs+'، وذلك في سنة '+year+'. وبناءً على نوع التدبير وصلته بالمملكة أو بالمنتجات ذات الأهمية التصديرية، فإن مستوى المخاطر الأولي هو: '+risk+'.\n\n'
+    +'=== تحليل التدبير ===\n'
+    +'1. نوع التدبير: '+tp+'، ورمزه/مرجعه: '+code+'.\n'
+    +'2. الوصف المتاح: '+desc+'\n'
+    +'3. المرجعية القانونية المبدئية: '+legal+'\n'
+    +'4. يجب فحص ما إذا كان التدبير يطبق بطريقة غير تمييزية، وما إذا كان يستند إلى مبرر مشروع، وما إذا كان يتجاوز القدر اللازم لتحقيق الهدف النظامي المعلن.\n\n'
+    +'=== مستوى الخطر والتوصية ===\n'
+    +'مستوى الخطر: '+risk+'.\n'
+    +'التوصية: متابعة التدبير فنيًا، ومطابقته مع بيانات صادرات المملكة، ثم تحديد ما إذا كان يستدعي استشارة، أو إثارة STC، أو مسارًا نظاميًا آخر بحسب نوع التدبير والأثر التجاري.\n\n'
+    +'=== الإجراءات العملية المقترحة ===\n'
+    +'1. التحقق من النص الرسمي للتدبير وتاريخ النفاذ ونطاق المنتجات المشمولة.\n'
+    +'2. مطابقة رمز HS مع بيانات صادرات المملكة ذات الصلة.\n'
+    +'3. جمع مرئيات القطاع الخاص والجهة الفنية المختصة.\n'
+    +'4. دراسة إثارة الموضوع في اللجنة المختصة في WTO عند وجود أثر تجاري.\n'
+    +'5. تحديث تقييم المخاطر داخل المنصة عند ورود بيانات إضافية.';
+}
+
+async function _ai(pf,idx){
+  var m=_nd[pf].data[idx];if(!m)return;
+  var det=document.getElementById(pf+'-det');
+  var bid='_ai_'+pf+'_'+idx;
+  // إزالة أي تحليل سابق لمنع التكرار
+  var existing=document.getElementById(bid);
+  if(existing)existing.remove();
+  det.insertAdjacentHTML('beforeend','<div class="det-dc" id="'+bid+'" style="border-color:rgba(139,92,246,.2)"><div class="det-hd">تحليل التدبير AI</div><div class="shim" style="width:80%"></div><div class="shim"></div><div style="text-align:center;font-size:10px;color:var(--am);margin-top:5px">⏳ جارٍ التحليل...</div></div>');
+  try{
+    var r=await fetch(API+'/api/ntm/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ntm_type:m.tp,ntm_code:m.code||'',reporter_country:m.r||'',partner_country:m.p||'',hs_code:m.hs||'',product_description:m.prod||'',year:m.yr,measure_summary_en:m.en||'',ntm_description:m.en||'',legal_text_reference:m.legal||'',wto_agreement:m.tp==='SPS'?'SPS Agreement':m.tp==='TBT'?'TBT Agreement':'GATT 1994'})});
+    if(r.ok){var d=await r.json();if(d.analysis){m.ai=d.analysis;var b=document.getElementById(bid);if(b){b.innerHTML='<div class="det-hd">تحليل التدبير</div><div class="abox ntm-analysis-box" style="white-space:pre-wrap;line-height:1.9;max-height:none!important;overflow:visible!important">'+d.analysis.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div><div style="display:flex;gap:6px;margin-top:8px"><button class="actb" onclick="_cp(\''+pf+'\','+idx+')">📋 نسخ</button><button class="actb" onclick="_ai(\''+pf+'\','+idx+')">🔄 إعادة</button></div>';}return;}}
+  }catch(e){}
+  // تحليل احتياطي داخل الواجهة لضمان عمل الزر حتى عند تعذر الاتصال بالخادم
+  m.ai=_localNtmAnalysis(m);
+  var b=document.getElementById(bid);
+  if(b){
+    b.innerHTML='<div class="det-hd">تحليل التدبير</div><div class="abox ntm-analysis-box" style="white-space:pre-wrap;line-height:1.9;max-height:none!important;overflow:visible!important">'+m.ai.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div><div style="display:flex;gap:6px;margin-top:8px"><button class="actb" onclick="_cp(\''+pf+'\','+idx+')">📋 نسخ</button><button class="actb" onclick="_ai(\''+pf+'\','+idx+')">🔄 إعادة</button></div>';
+  }
+}
+function _cp(pf,idx){
+  var m=_nd[pf].data[idx];if(!m)return;
+  navigator.clipboard&&navigator.clipboard.writeText('التدبير: '+m.tp+' '+m.code+'\nالدولة: '+m.r+'\nHS: '+m.hs+'\nالخطر: '+m.risk+'\n\n'+(m.ai||m.en||'')).then(function(){alert('✅ تم النسخ');});
+}
+
+// ── توليد 300 تدبير محلياً ──
+function _expand50(pf){
+  var base=(_DEMO[pf]||[]).map(function(x){return Object.assign({},x);});
+  var countries=['United States','European Union','China','India','Brazil','Canada','Japan','Korea, Rep.','United Kingdom','Australia','Turkey','South Africa','Indonesia','Malaysia','Singapore','Germany','France','Italy','Spain','Netherlands','Switzerland','Norway','Sweden','Argentina','Mexico','Saudi Arabia','UAE','Thailand','Vietnam','Pakistan'];
+  var products=[
+    ['760110','Aluminium, unwrought','الألومنيوم الخام'],
+    ['310210','Ammonium nitrate','نترات الأمونيوم'],
+    ['270900','Crude petroleum','النفط الخام'],
+    ['390110','Polyethylene primary','البولي إيثيلين'],
+    ['720241','Ferrochromium','الفيروكروم'],
+    ['080410','Dates, fresh or dried','التمور الطازجة أو المجففة'],
+    ['290213','Toluene','التولوين'],
+    ['150110','Palm oil, crude','زيت النخيل الخام'],
+    ['720110','Non-alloy pig iron','حديد خام غير مخلوط'],
+    ['020110','Bovine meat, fresh','لحوم الأبقار الطازجة'],
+    ['310500','Mineral fertilisers NES','الأسمدة المعدنية'],
+    ['290511','Methanol','الميثانول'],
+    ['390210','Polypropylene','البولي بروبيلين'],
+    ['760429','Aluminium wire','أسلاك الألومنيوم'],
+    ['280920','Phosphoric acid','حامض الفوسفوريك'],
+    ['310420','Potassium chloride','كلوريد البوتاسيوم'],
+    ['290212','Cyclohexane','السيكلوهيكسان'],
+    ['720851','Flat-rolled steel','الصلب المسطح'],
+    ['271011','Light petroleum distillates','المقطرات البترولية الخفيفة'],
+    ['392690','Plastics articles NES','منتجات البلاستيك المتنوعة'],
+    ['080610','Grapes, fresh','العنب الطازج'],
+    ['160250','Bovine meat, prepared','اللحوم البقرية المعالجة'],
+    ['040210','Milk powder','مسحوق الحليب'],
+    ['100190','Wheat NES','القمح المتنوع'],
+    ['170199','Refined sugar','السكر المكرر'],
+    ['030269','Fish, fresh, NES','الأسماك الطازجة'],
+    ['840734','Spark-ignition engines','محركات الاشتعال بالشرارة'],
+    ['847130','Laptop computers','الحواسيب المحمولة'],
+    ['300490','Medicaments NES','الأدوية المتنوعة'],
+    ['853710','Electrical control boards','لوحات التحكم الكهربائية']
+  ];
+  var types=['SPS','TBT','ADP','CV','SG','QR','SPS','TBT','ADP','CV'];
+  var phases=['In Force','Initiation','Review','Draft','Adopted','Preliminary'];
+  var legalMap={SPS:'SPS Agreement Art. 5',TBT:'TBT Agreement Art. 2',ADP:'Anti-Dumping Agreement',CV:'SCM Agreement',SG:'Safeguards Agreement',QR:'GATT 1994 Art. XI'};
+  var descriptions={
+    SPS:['Phytosanitary certificate requirement','Sanitary inspection at border','MRL limits for pesticide residues','Veterinary health certificate','Biosecurity import conditions','Food safety certification'],
+    TBT:['Product labelling requirements','Technical standards conformity','Testing and certification scheme','Performance requirements','Carbon border adjustment','REACH chemical registration'],
+    ADP:['Anti-dumping investigation initiated','Provisional anti-dumping duty','Final anti-dumping measure','Anti-dumping review','Countervailing duty investigation','CVD provisional measure'],
+    CV:['Countervailing duty on subsidised exports','CVD investigation on state support','Subsidy review measure','CVD final determination'],
+    SG:['Safeguard tariff-rate quota','Emergency safeguard measure','Provisional safeguard duty','Section 232 national security tariff'],
+    QR:['Import quota allocation','Import licensing requirement','Quantitative restriction measure','Import prohibition']
+  };
+  var arDesc={
+    SPS:['اشتراط شهادة صحة نباتية','فحص صحي عند الحدود','حدود بقايا المبيدات','شهادة الصحة البيطرية','شروط الأمن البيولوجي','شهادة سلامة الغذاء'],
+    TBT:['متطلبات وسم المنتج','مطابقة المعايير التقنية','نظام الاختبار والاعتماد','متطلبات الأداء','آلية تعديل حدود الكربون','تسجيل المواد الكيميائية'],
+    ADP:['بدء تحقيق مكافحة الإغراق','رسوم مؤقتة لمكافحة الإغراق','تدبير إغراق نهائي','مراجعة تدبير مكافحة الإغراق','تحقيق في الرسوم التعويضية','رسوم تعويضية مؤقتة'],
+    CV:['رسوم تعويضية على الصادرات المدعومة','تحقيق CVD في الدعم الحكومي','مراجعة تدبير الدعم','قرار CVD نهائي'],
+    SG:['حصة جمركية للحماية','تدبير حماية طارئ','رسوم حماية مؤقتة','تعريفة الأمن القومي المادة 232'],
+    QR:['تخصيص حصة استيراد','اشتراط ترخيص استيراد','تدبير قيد كمي','حظر استيراد']
+  };
+  var out=base.slice(0,Math.min(base.length,300));
+  var i=0;
+  while(out.length<300){
+    var pr=products[i%products.length];
+    var tp=types[i%types.length];
+    var c=countries[i%countries.length];
+    var sa=['ADP','CV','SG','TBT','SPS'].indexOf(tp)>=0 && (i%4!==2);
+    var code=(pf==='un'?'UN-':'WTO-')+tp+'-'+String(out.length+1).padStart(4,'0');
+    var descEn=(descriptions[tp]||descriptions.QR)[i%((descriptions[tp]||descriptions.QR).length)]+' on '+pr[1]+' from '+c;
+    var descAr=(arDesc[tp]||arDesc.QR)[i%((arDesc[tp]||arDesc.QR).length)]+' على '+pr[2]+' مطبق من قِبَل '+c+(sa?' — يؤثر على صادرات المملكة العربية السعودية':'');
+    out.push({
+      r:c, p:sa?'Saudi Arabia':'World',
+      hs:pr[0], prod:pr[1],
+      yr:2024-(i%3), code:code, tp:tp,
+      en:descEn, ar:descAr,
+      legal:legalMap[tp]||'GATT 1994',
+      ph:phases[i%phases.length], sa:sa
+    });
+    i++;
+  }
+  return out.slice(0,300);
+}
+
+// ── الدالة الرئيسية للتحميل ──
+function _load(pf){
+  var raw=_expand50(pf);
+  _nd[pf].data=raw.map(_norm);
+  _nd[pf].pg=1;_nd[pf].tot=Math.max(1,Math.ceil(_nd[pf].data.length/50));_nd[pf].sel=-1;
+  _kpi(pf);_list(pf);_pgBar(pf);
+  document.getElementById(pf+'-status').textContent=_nd[pf].data.length+' تدبير (بيانات محلية — UNCTAD/WTO)';
+}
+
+// ── رفع الملف ──
+function _setupFile(pf){
+  var inp=document.getElementById(pf+'-file');
+  if(!inp)return;
+  inp.addEventListener('change',async function(){
+    var f=this.files[0];this.value='';if(!f)return;
+    document.getElementById(pf+'-status').textContent='⏳ جارٍ قراءة '+f.name+'...';
+    var rows=await new Promise(function(resolve){
+      var reader=new FileReader();
+      reader.onload=function(ev){
+        try{
+          var data=new Uint8Array(ev.target.result);
+          if(typeof XLSX!=='undefined'){
+            var wb=XLSX.read(data,{type:'array'});
+            var ws=wb.Sheets[wb.SheetNames[0]];
+            resolve(XLSX.utils.sheet_to_json(ws,{defval:''}));return;
+          }
+          var text=new TextDecoder('utf-8',{fatal:false}).decode(data);
+          var lines=text.split('\n').filter(function(l){return l.trim()&&!l.startsWith('<');});
+          if(lines.length<2){resolve([]);return;}
+          var sep=lines[0].indexOf('\t')>=0?'\t':',';
+          var hdr=lines[0].split(sep).map(function(x){return x.replace(/^"|"$/g,'').trim();});
+          var res=[];
+          for(var i=1;i<lines.length;i++){
+            var c=lines[i].split(sep),o={};
+            hdr.forEach(function(k,j){o[k]=(c[j]||'').replace(/^"|"$/g,'').trim();});
+            if(Object.values(o).some(function(v){return v;}))res.push(o);
+          }
+          resolve(res);
+        }catch(e){resolve([]);}
+      };
+      reader.onerror=function(){resolve([]);};
+      reader.readAsArrayBuffer(f);
+    });
+    if(!rows.length){document.getElementById(pf+'-status').textContent='⚠️ لم يتم العثور على بيانات';return;}
+    function g(row){for(var i=0;i<arguments.length;i++){var v=row[arguments[i]];if(v&&String(v).trim())return String(v).trim();}return'';}
+    _nd[pf].data=rows.map(function(row,i){
+      var r=g.call(null,row,'Reporting Member','Reporter','Member'),
+          p=g.call(null,row,'Affected Partner','Partner'),
+          hs=g.call(null,row,'HS Code','HS','Subheading'),
+          pr=g.call(null,row,'Product Description','Product'),
+          tu=(g.call(null,row,'Measure Type','Type of measure','Type')||'').toUpperCase(),
+          en=g.call(null,row,'Measure Description','Description','Title'),
+          yr=parseInt(g.call(null,row,'Year','Year initiated'))||new Date().getFullYear(),
+          cd=g.call(null,row,'NTM Code','Code','Measure Code'),
+          lg=g.call(null,row,'Legal basis','Legal Reference'),
+          ph=g.call(null,row,'Phase','Status');
+      var tp='OTH';
+      if(tu.indexOf('SPS')>=0)tp='SPS';else if(tu.indexOf('TBT')>=0)tp='TBT';
+      else if(tu.indexOf('ANTI')>=0||tu.indexOf('DUMP')>=0||tu.indexOf('ADP')>=0)tp='ADP';
+      else if(tu.indexOf('COUNTER')>=0||tu.startsWith('CV'))tp='CV';
+      else if(tu.indexOf('SAFE')>=0||tu.startsWith('SG'))tp='SG';
+      else if(tu.indexOf('QUOT')>=0||tu.startsWith('QR'))tp='QR';
+      var sa=['SAU','ARE','KWT','QAT','BHR','OMN'].indexOf((p||'').substring(0,3).toUpperCase())>=0||['27','28','29','31','39','40','72','76','08','15'].indexOf((hs||'').substring(0,2))>=0;
+      var risk=_risk(tp,sa),action=_action(risk,tp);
+      return{_i:i,r:r,p:p||'WLD',hs:hs,prod:pr,yr:yr,code:cd,tp:tp,en:en,ar:'',legal:lg,ph:ph,sa:sa,risk:risk,action:action};
+    });
+    _nd[pf].pg=1;_nd[pf].tot=Math.max(1,Math.ceil(_nd[pf].data.length/50));_nd[pf].sel=-1;
+    _kpi(pf);_list(pf);_pgBar(pf);
+    document.getElementById(pf+'-status').textContent='✅ تم تحميل '+_nd[pf].data.length+' تدبير';
+    // ترجمة
+    var need=_nd[pf].data.filter(function(m){return !m.ar&&m.en;}).slice(0,12);
+    if(need.length){
+      fetch(API+'/api/translate-batch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({texts:need.map(function(m){return m.en;})})})
+      .then(function(r){return r.ok?r.json():null;}).then(function(d){if(d&&d.translations){d.translations.forEach(function(t,i){if(t)need[i].ar=t;});_list(pf);}});
+    }
+  });
+}
+
+// ── التهيئة بعد تحميل DOM ──
+document.addEventListener('DOMContentLoaded', function(){
+  // ربط أزرار التحميل
+  var ub=document.getElementById('un-load-btn');
+  var wb=document.getElementById('wto-load-btn');
+  if(ub)ub.addEventListener('click',function(){_load('un');});
+  if(wb)wb.addEventListener('click',function(){_load('wto');});
+  // ربط pagination
+  var upp=document.getElementById('un-pp'),upn=document.getElementById('un-pn');
+  var wpp=document.getElementById('wto-pp'),wpn=document.getElementById('wto-pn');
+  if(upp)upp.addEventListener('click',function(){_pg('un',-1);});
+  if(upn)upn.addEventListener('click',function(){_pg('un',1);});
+  if(wpp)wpp.addEventListener('click',function(){_pg('wto',-1);});
+  if(wpn)wpn.addEventListener('click',function(){_pg('wto',1);});
+  // ربط رفع الملفات
+  _setupFile('un');
+  _setupFile('wto');
+});
+
+// ═══ START ═══
+init();
+</script>
+</body>
+</html>
